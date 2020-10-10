@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.enums.DrivingMode;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
-
+import java.util.Arrays;
 @TeleOp(name  = "TeleOp Mode", group = "Finished")
 public class driveOnlyteleOp extends LinearOpMode {
     //drive train
@@ -39,8 +39,15 @@ public class driveOnlyteleOp extends LinearOpMode {
             
             telemetry.addData("Status", "Running");
             telemetry.addData("Brake Mode", drivingLibrary.getMode());
+            drivingLibrary.printEncoderValues();
 
+            if (gamepad1.x){
+                int[] values = drivingLibrary.getEncoderValues();
+                telemetry.log().add("Encoder values(fl, fr, rl, rr)"+ Arrays.toString(values));
+            }
             telemetry.update();
+
+
 
 
 
