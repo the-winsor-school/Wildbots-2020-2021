@@ -131,7 +131,7 @@ public class DrivingLibrary {
         rightRear.setPower(strafePowers[3] * speedSetting);
     }
 
-    //essentially the same as regular driving but diffIs joystick one wise to his joystickerent wheels are reversed
+    //essentially the same as regular driving but different wheels are reversed
     public void bevelDrive(float x, float y, float t) {
         double vd = strafeSpeed(x, y);
         theta = Math.atan2(y, x);
