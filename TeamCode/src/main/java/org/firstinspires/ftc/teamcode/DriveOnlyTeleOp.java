@@ -15,6 +15,7 @@ public class DriveOnlyTeleOp extends LinearOpMode {
     //drive train
     DrivingLibrary drivingLibrary;
     int drivingMode;
+    int ranOnce = 0;
 
 
 
@@ -32,25 +33,33 @@ public class DriveOnlyTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            //gamepad1.b = b button on 1st controller
-            if (gamepad1.b) {
-                drivingMode++;
-                drivingMode %= DrivingMode.values().length;
-                drivingLibrary.setMode(drivingMode);
-            }
+            if (ranOnce==0) {
+                //gamepad1.b = b button on 1st controller
+                if (gamepad1.b) {
+                    drivingMode++;
+                    drivingMode %= DrivingMode.values().length;
+                    drivingLibrary.setMode(drivingMode);
+                }
+                drivingLibrary.resetEncoderValues();
 
-            drivingLibrary.bevelDrive(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+                //sends text to driver phone
+                telemetry.addData("Status", "Running");
+                telemetry.addData("Brake Mode", drivingLibrary.getMode());
 
-            //sends text to driver phone
-            telemetry.addData("Status", "Running");
-            telemetry.addData("Brake Mode", drivingLibrary.getMode());
-            drivingLibrary.printEncoderValues();
-
-            if (gamepad1.x){
                 int[] values = drivingLibrary.getEncoderValues();
-                telemetry.log().add("Encoder values(fl, fr, rl, rr)"+ Arrays.toString(values));
+                telemetry.log().add("Start encoder values(fl, fr, rl, rr)" + Arrays.toString(values));
+                telemetry.update();
+
+                drivingLibrary.bevelDrive(0, -.75f, 0);
+                sleep(1600);
+                drivingLibrary.brakeStop();
+                //drivingLibrary.printEncoderValues();
+
+                values = drivingLibrary.getEncoderValues();
+                telemetry.log().add("End encoder values(fl, fr, rl, rr)" + Arrays.toString(values));
+                telemetry.update();
+                ranOnce=1;
             }
-            telemetry.update();
 
 
 

@@ -137,7 +137,7 @@ public class DrivingLibrary {
         theta = Math.atan2(y, x);
         double vt = t;
 
-        if (vt == 0) {
+        /*if (vt == 0) {
             if (Math.abs(getIMUAngle() - targetAngle) >= .1) {
                 if (getIMUAngle() > 0) {
                     vt = .1;
@@ -150,7 +150,7 @@ public class DrivingLibrary {
         else {
             targetAngle = getIMUAngle();
         }
-
+        */
         //in order -- lF, rF, rR, lR
         strafePowers = new double[] {
                 vd * Math.sin(theta + Math.PI/4) * strafeBias[0] - vt,
