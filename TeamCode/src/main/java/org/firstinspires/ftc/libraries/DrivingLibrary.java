@@ -12,11 +12,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.enums.DrivingMode;
+import org.firstinspires.ftc.enums.Encoders;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import java.util.Hashtable;
+
 
 import java.util.Arrays;
 
@@ -44,6 +48,7 @@ public class DrivingLibrary {
     private double theta;
     private double strafeError;
     private double targetAngle;
+    private Hashtable<Encoders, Integer> encoderTable;
 
     public DrivingLibrary(OpMode opMode) {
         this.opMode = opMode;
@@ -53,6 +58,9 @@ public class DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
+
+        encoderTable = new Hashtable<Encoders, Integer>();
+
 
         // MOTOR ORDER: LF, RF, LR, RR
         allMotors = new DcMotor[] {leftFront, rightFront, leftRear, rightRear};
@@ -313,4 +321,38 @@ public class DrivingLibrary {
         opMode.telemetry.addData("rear left encoder", encoderValues[2]);
         opMode.telemetry.addData("rear right encoder", encoderValues[3]);
     }
+
+    public void distanceToEncoderValue(int dist){
+        encoderTable.put(Encoders.LF, (int)(-61.3*dist+26.6));
+        encoderTable.put(Encoders.RF, (int)(-61.8*dist+18.2));
+        encoderTable.put(Encoders.LR, (int)(-61.8*dist+26.4));
+        encoderTable.put(Encoders.RR, (int)(-61.7*dist+22.6));
+    }
+    public void setEncoders(int dist){
+        distanceToEncoderValue(dist);
+        leftFront.setTargetPosition(encoderTable.get(Encoders.LF));
+        rightFront.setTargetPosition(encoderTable.get(Encoders.RF));
+        leftRear.setTargetPosition(encoderTable.get(Encoders.LR));
+        rightRear.setTargetPosition(encoderTable.get(Encoders.RR));
+        }
+    public boolean motorsBusy() {
+        if(rightFront.isBusy() || leftFront.isBusy() || rightRear.isBusy() || leftRear.isBusy()) {
+            return true;
+        }
+        return false;
+    }
+    public void setRunMode(boolean encoderMode){
+        if (encoderMode == true){
+            for (DcMotor motor : allMotors) {
+                motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+        }
+        else{
+            for (DcMotor motor : allMotors) {
+                motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+        }
+    }
+
+
 }
