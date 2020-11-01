@@ -22,15 +22,22 @@ public class TestDistanceWithEncoders extends LinearOpMode {
         drivingMode = 0;
         drivingLibrary.setMode(drivingMode);
         boolean ranOnce = false;
-
+        telemetry.addData("status", "initilized");
+        telemetry.update();
         drivingLibrary.resetEncoderValues();
         drivingLibrary.setEncoders(12);
         drivingLibrary.setRunMode(true);
+        int[] values = drivingLibrary.getEncoderValues();
 
         waitForStart();
         while(opModeIsActive() && drivingLibrary.motorsBusy()){
             drivingLibrary.bevelDrive(0, -.75f, 0);
+            values=drivingLibrary.getEncoderValues();
+            telemetry.addData("encoder values:", Arrays.toString(values));
+            telemetry.update();
         }
         drivingLibrary.brakeStop();
+
+
     }
 }

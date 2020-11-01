@@ -26,10 +26,10 @@ import java.util.Arrays;
 
 public class DrivingLibrary {
     // hardware variables
-    private DcMotor leftFront;
-    private DcMotor rightFront;
-    private DcMotor leftRear;
-    private DcMotor rightRear;
+    public DcMotor leftFront;
+    public DcMotor rightFront;
+    public DcMotor leftRear;
+    public DcMotor rightRear;
     private DcMotor[] allMotors;
     private HardwareMap hardwareMap;
     private double[] strafeBias;
@@ -170,7 +170,7 @@ public class DrivingLibrary {
         strafeScale(strafePowers);
 
         leftFront.setPower(strafePowers[0] * speedSetting);
-        rightFront.setPower(-strafePowers[1] * speedSetting);
+        rightFront.setPower(strafePowers[1] * speedSetting);
         rightRear.setPower(strafePowers[2] * speedSetting);
         leftRear.setPower(strafePowers[3] * speedSetting);
 
@@ -336,7 +336,7 @@ public class DrivingLibrary {
         rightRear.setTargetPosition(encoderTable.get(Encoders.RR));
         }
     public boolean motorsBusy() {
-        if(rightFront.isBusy() || leftFront.isBusy() || rightRear.isBusy() || leftRear.isBusy()) {
+        if(leftFront.isBusy() || rightRear.isBusy() || leftRear.isBusy()) {
             return true;
         }
         return false;
