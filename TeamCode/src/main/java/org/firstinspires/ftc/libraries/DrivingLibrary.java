@@ -49,6 +49,7 @@ public class DrivingLibrary {
     private double strafeError;
     private double targetAngle;
     private Hashtable<Encoders, Integer> encoderTable;
+    private Hashtable<Encoders, Integer> recordEncoderTable;
 
     public DrivingLibrary(OpMode opMode) {
         this.opMode = opMode;
@@ -60,6 +61,7 @@ public class DrivingLibrary {
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
 
         encoderTable = new Hashtable<Encoders, Integer>();
+        recordEncoderTable=new Hashtable<Encoders,Integer>();
 
 
         // MOTOR ORDER: LF, RF, LR, RR
@@ -353,6 +355,36 @@ public class DrivingLibrary {
             }
         }
     }
+    public void setRecordEncoderTable(){
+        recordEncoderTable.put(Encoders.LF, leftFront.getCurrentPosition());
+        recordEncoderTable.put(Encoders.RF, rightFront.getCurrentPosition());
 
+    }
+    private double getDeltaS(){
+        double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
+        double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
+        double s =(Sr-Sl)/2;
+        return s;
+    }
+    private double getDeltaTheta() {
+        double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
+        double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
+        double theta=(Sr-Sl)/13.25;
+        return theta;
+    }
+    public double getDeltaX(){
+        //its delta theta divided by two because that's how the math
+        //and I didn't want to make another variable :/
+        double halfDeltaTheta = getDeltaTheta()/2;
+        double deltaS = getDeltaS();
+        double deltaX=deltaS*Math.cos(getIMUAngle()+halfDeltaTheta);
+        return deltaX;
+    }
+    public double getDeltaY(){
+        double halfDeltaTheta = getDeltaTheta()/2;
+        double deltaS = getDeltaS();
+        double deltaY=deltaS*Math.sin(getIMUAngle()+halfDeltaTheta);
+        return deltaY;
+    }
 
 }
