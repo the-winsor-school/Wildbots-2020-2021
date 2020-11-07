@@ -27,7 +27,7 @@ public class DeleteMe extends LinearOpMode {
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
 
         drivingLibrary.resetEncoderValues();
-        drivingLibrary.setEncoders(48);
+        drivingLibrary.setEncoders(27);
         drivingLibrary.setSpeed(1);
 
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
