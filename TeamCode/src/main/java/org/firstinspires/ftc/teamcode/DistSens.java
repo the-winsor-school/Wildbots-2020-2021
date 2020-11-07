@@ -24,6 +24,13 @@ public class DistSens extends LinearOpMode {
         while(opModeIsActive()){
             telemetry.addData("Top Sensor Value", DistSenTop.getDistance(DistanceUnit.CM));
             telemetry.addData("Bottom Sensor Value", DistSenBottom.getDistance(DistanceUnit.CM));
+            if(DistSenTop.getDistance(DistanceUnit.CM) < 200){
+                telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            } else if (DistSenBottom.getDistance(DistanceUnit.CM) < 200){
+                telemetry.addData("One Ring", DistSenBottom.getDistance(DistanceUnit.CM));
+            } else {
+                telemetry.addData("Zero Rings", DistSenBottom.getDistance(DistanceUnit.CM));
+            }
             telemetry.update();
         }
     }
