@@ -377,6 +377,9 @@ public class    DrivingLibrary {
         encoderTable.put(Encoders.LR, (int)(-61.8*dist+26.4));
         encoderTable.put(Encoders.RR, (int)(-61.7*dist+22.6));
     }
+    public int getLeftFrontEncoderValueSpecifically(){
+        return encoderTable.get(Encoders.LF);
+    }
     public void setEncoders(int dist){
         distanceToEncoderValue(dist);
         leftFront.setTargetPosition(encoderTable.get(Encoders.LF));
