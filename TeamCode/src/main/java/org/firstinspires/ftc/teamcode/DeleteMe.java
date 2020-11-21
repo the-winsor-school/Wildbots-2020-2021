@@ -20,7 +20,7 @@ public class DeleteMe extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         drivingLibrary = new DrivingLibrary(this);
-        boolean ranOnce = false;
+        //boolean ranOnce = false;
         leftFront = hardwareMap.tryGet(DcMotor.class, "leftFront");
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
