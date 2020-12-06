@@ -34,7 +34,6 @@ package org.firstinspires.ftc.teamcode;
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -69,14 +68,19 @@ public class LiningUpYay extends LinearOpMode {
     private static final String VUFORIA_KEY =
             "AVR5VxH/////AAABmQUP+WbSPEy9iyJjnD0VyyZdSmGgLyXX1NscDt7/AWW92iCkV0ckLd5A92CIRczLOcQ6lQlSI/u0JFsCyQYMB+1eKbLJcYKjpOpW64fzTJ9kkzDHin+ybf7Kin2dLtzW+HkvqNsZWkSIyWGM3AOquQiIIoi3MOZRUe0aCX8+dGwPe8FBOMDi4EaJXehqP0HqD2mBeElngDR6Fhg/VZvkNksRTA+KeBVUnNzuX4FERrsd89EXutOuq3Y3ocqhN+tJL8B2U/iV9qNC11Vj7ipxni+Uen4zYyOovIOhgoy0tG1XGzge7RZMg5n+wVOBkWtViLlC2G34qks2H/EBRRoQ9nRacyCeNj75/q/6J1NE/DaL";
 
+    // goal position: (11.1, 35.5)
+    private static final float GOAL_X = 11.1f;
+    private static final float GOAL_Y = 35.5f;
+
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
-    private static final float mmPerInch = 25.4f;
-    private static final float mmTargetHeight = (6) * mmPerInch;          // the height of the center of the target image above the floor
+    private static final float MM_PER_INCH = 25.4f;
+
+    private static final float MM_TARGET_HEIGHT = (6) * MM_PER_INCH;          // the height of the center of the target image above the floor
 
     // Constants for perimeter targets
-    private static final float halfField = 72 * mmPerInch;
-    private static final float quadField = 36 * mmPerInch;
+    private static final float HALF_FIELD = 72 * MM_PER_INCH;
+    private static final float QUAD_FIELD = 36 * MM_PER_INCH;
 
     // Class Members
     private OpenGLMatrix lastLocation = null;
@@ -117,7 +121,8 @@ public class LiningUpYay extends LinearOpMode {
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        int cameraMonitorViewId = hardwareMap.appContext.getResources()
+                .getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -173,22 +178,22 @@ public class LiningUpYay extends LinearOpMode {
 
         //Set the position of the perimeter targets with relation to origin (center of field)
         redAllianceTarget.setLocation(OpenGLMatrix
-                .translation(0, -halfField, mmTargetHeight)
+                .translation(0, -HALF_FIELD, MM_TARGET_HEIGHT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180)));
 
         blueAllianceTarget.setLocation(OpenGLMatrix
-                .translation(0, halfField, mmTargetHeight)
+                .translation(0, HALF_FIELD, MM_TARGET_HEIGHT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0)));
         frontWallTarget.setLocation(OpenGLMatrix
-                .translation(-halfField, 0, mmTargetHeight)
+                .translation(-HALF_FIELD, 0, MM_TARGET_HEIGHT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 90)));
 
         // The tower goal targets are located a quarter field length from the ends of the back perimeter wall.
         blueTowerGoalTarget.setLocation(OpenGLMatrix
-                .translation(halfField, quadField, mmTargetHeight)
+                .translation(HALF_FIELD, QUAD_FIELD, MM_TARGET_HEIGHT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
         redTowerGoalTarget.setLocation(OpenGLMatrix
-                .translation(halfField, -quadField, mmTargetHeight)
+                .translation(HALF_FIELD, -QUAD_FIELD, MM_TARGET_HEIGHT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
 
         //
@@ -219,8 +224,8 @@ public class LiningUpYay extends LinearOpMode {
 
         // Next, translate the camera lens to where it is on the robot.
         // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
-        final float CAMERA_FORWARD_DISPLACEMENT = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot-center
-        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
+        final float CAMERA_FORWARD_DISPLACEMENT = 4.0f * MM_PER_INCH;   // eg: Camera is 4 Inches in front of robot-center
+        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * MM_PER_INCH;   // eg: Camera is 8 Inches above ground
         final float CAMERA_LEFT_DISPLACEMENT = 0;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
@@ -277,30 +282,28 @@ public class LiningUpYay extends LinearOpMode {
 
                 if (visibleTarget.equals("GOAL")) {
                     VectorF translation = lastLocation.getTranslation();
-                    float fieldX = translation.get(0) / mmPerInch;
-                    float fieldY = translation.get(1) / mmPerInch;
-                    // goal position: (11.1, 35.5)
-                    float goalX = 11.1f;
-                    float goalY = 35.5f;
+                    float fieldX = translation.get(0) / MM_PER_INCH;
+                    float fieldY = translation.get(1) / MM_PER_INCH;
+
 
                     /**
                      * the fieldX gets bigger as the robot gets closer to the goal
                      * the fieldY gets bigger as the robot gets closer to the near wall
                      */
 
-                    if (Math.abs(goalX - fieldX) > 1) {
+                    if (Math.abs(GOAL_X - fieldX) > 1) {
                         telemetry.addLine("not at the right X");
                         //when the goalX is bigger than the fieldX, the robot needs to move TOWARDS THE GOAL
                         //POSITIVE IS TOWARDS THE GOAL
-                        driveX = (goalX - fieldX) / goalX;
+                        driveX = (GOAL_X - fieldX) / GOAL_X;
                     } else {
                         driveX = 0;
                     }
-                    if (Math.abs(goalY - fieldY) > 1) {
+                    if (Math.abs(GOAL_Y - fieldY) > 1) {
                         telemetry.addLine("not at the right Y");
                         //when the goalY is bigger than the fieldY, the robot needs to move TOWARDS THE WALL
                         //POSITIVE IS TOWARDS THE WALL
-                        driveY = (goalY - fieldY) / goalY;
+                        driveY = (GOAL_Y - fieldY) / GOAL_Y;
                     } else {
                         driveY = 0;
                     }
