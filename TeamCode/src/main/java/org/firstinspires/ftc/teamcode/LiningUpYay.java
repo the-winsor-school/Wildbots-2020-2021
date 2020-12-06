@@ -257,7 +257,7 @@ public class LiningUpYay extends LinearOpMode {
                     telemetry.addData("Visible Target", trackable.getName());
                     targetVisible = true;
 
-                    if (trackable.getName() == "Blue Tower Goal Target") {
+                    if (trackable.getName().equals("Blue Tower Goal Target")) {
                         visibleTarget = "GOAL";
                         telemetry.addLine("moving to tower goal target!! yay!");
                     }
@@ -275,7 +275,7 @@ public class LiningUpYay extends LinearOpMode {
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
 
-                if (visibleTarget == "GOAL") {
+                if (visibleTarget.equals("GOAL")) {
                     VectorF translation = lastLocation.getTranslation();
                     float fieldX = translation.get(0) / mmPerInch;
                     float fieldY = translation.get(1) / mmPerInch;
