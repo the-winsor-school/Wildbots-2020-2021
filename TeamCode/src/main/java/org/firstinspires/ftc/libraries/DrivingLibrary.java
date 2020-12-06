@@ -7,6 +7,7 @@ package org.firstinspires.ftc.libraries;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -24,12 +25,15 @@ import java.util.Hashtable;
 
 import java.util.Arrays;
 
-public class DrivingLibrary {
+public class    DrivingLibrary {
     // hardware variables
     public DcMotor leftFront;
     public DcMotor rightFront;
     public DcMotor leftRear;
     public DcMotor rightRear;
+    public Rev2mDistanceSensor distSenTop;
+    public Rev2mDistanceSensor distSenBottom;
+
     private DcMotor[] allMotors;
     private HardwareMap hardwareMap;
     private double[] strafeBias;
@@ -58,6 +62,8 @@ public class DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
+        distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
+        distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
 
         encoderTable = new Hashtable<Encoders, Integer>();
 
