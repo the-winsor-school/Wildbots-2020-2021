@@ -29,15 +29,18 @@ public class PowerShot extends LinearOpMode {
         // assume we start lined up with the goal and have the camera
         // and launch mech facing the goal and the robot is behind the
         // launch line
-
         waitForStart();
-        // all of this is just calling methods (see that we have not fully fleshed out takeShot)
-        moveToDistance(TARGET_1_DISTANCE);
-        takeShot();
-        moveToDistance(TARGET_2_DISTANCE);
-        takeShot();
-        moveToDistance(TARGET_3_DIATANCE);
-        takeShot();
+        while (opModeIsActive()) {
+            // all of this is just calling methods (see that we have not fully fleshed out takeShot)
+            moveToDistance(TARGET_1_DISTANCE);
+            takeShot();
+            moveToDistance(TARGET_2_DISTANCE);
+            takeShot();
+            moveToDistance(TARGET_3_DIATANCE);
+            takeShot();
+
+            break;
+        }
     }
 
     // when we know how, put in the code for launching
