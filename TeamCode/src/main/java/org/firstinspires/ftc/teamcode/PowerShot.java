@@ -43,8 +43,8 @@ public class PowerShot extends LinearOpMode {
     }
 
     // when we know how, put in the code for launching
-    private void takeShot() {
-
+    private void takeShot() throws InterruptedException {
+        Thread.sleep(1000);
     }
 
     private void moveToDistance(double targetDistance) {
