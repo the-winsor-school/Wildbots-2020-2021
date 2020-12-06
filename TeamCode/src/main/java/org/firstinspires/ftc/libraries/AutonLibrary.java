@@ -97,7 +97,7 @@ public class AutonLibrary {
         final float CAMERA_FORWARD_DISPLACEMENT = 0;
         final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * MM_PER_INCH;
         final float CAMERA_LEFT_DISPLACEMENT = 6.0f * MM_PER_INCH;
-        
+
         this.robotFromCamera = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, Y_ROTATE, Z_ROTATE, X_ROTATE));
