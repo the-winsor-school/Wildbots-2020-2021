@@ -50,6 +50,11 @@ public class DriveOnlyTeleOp extends LinearOpMode {
                 telemetry.log().add("Start encoder values(fl, fr, rl, rr)" + Arrays.toString(values));
                 telemetry.update();
 
+            //sends text to driver phone
+            telemetry.addData("Status", "Running");
+
+            telemetry.addData("Brake Mode", drivingLibrary.getMode());
+            drivingLibrary.printEncoderValues();
                 //drivingLibrary.bevelDrive(0, -.75f, 0);
                 //sleep(1600);
                 drivingLibrary.setEncoders(1);
