@@ -11,12 +11,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class PowerShot extends LinearOpMode {
     public static final int ONE_SECOND = 1000;
     private DrivingLibrary drivingLibrary;
-    //target 1 dist is the distance the robot should be from the right wall
-    //when it is lined up with power shot 1
-    //NOTE: measure what the actual distances are and don't GUESS DUMMY
+    /* target 1 dist is the distance the robot should be from the right wall
+    when it is lined up with power shot 1
+    NOTE: measure what the actual distances are and don't GUESS DUMMY */
     private static final double TARGET_1_DISTANCE = 36.0;
     private static final double TARGET_2_DISTANCE = 30.0;
-    private static final double TARGET_3_DIATANCE = 24.0;
+    private static final double TARGET_3_DISTANCE = 24.0;
 
     //Needs the method "runOpMode" when extending to a LinearOpMode
     @Override
@@ -26,9 +26,9 @@ public class PowerShot extends LinearOpMode {
         telemetry.addData("status", "initialized");
         telemetry.update();
 
-        // assume we start lined up with the goal and have the camera
-        // and launch mech facing the goal and the robot is behind the
-        // launch line
+        /* assume we start lined up with the goal and have the camera
+        and launch mech facing the goal and the robot is behind the
+        launch line */
         waitForStart();
         while (opModeIsActive()) {
             // all of this is just calling methods (see that we have not fully fleshed out takeShot)
@@ -36,7 +36,7 @@ public class PowerShot extends LinearOpMode {
             takeShot();
             moveToDistance(TARGET_2_DISTANCE);
             takeShot();
-            moveToDistance(TARGET_3_DIATANCE);
+            moveToDistance(TARGET_3_DISTANCE);
             takeShot();
 
             break;
