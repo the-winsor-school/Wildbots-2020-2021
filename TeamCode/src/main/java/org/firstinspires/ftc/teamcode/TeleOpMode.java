@@ -15,8 +15,8 @@ import org.firstinspires.ftc.libraries.AutonLibrary;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-@Disabled
-    @TeleOp(name  = "TeleOp Mode", group = "Finished")
+
+    @TeleOp(name  = "TeleOp Controller Mode", group = "Finished")
     public class TeleOpMode extends LinearOpMode {
         //drive train
         DrivingLibrary drivingLibrary;
@@ -24,13 +24,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
         int drivingMode;
         VuforiaLocalizer vuforia;
 
-        DcMotor launchMotor;
-        DcMotor intakeMotor;
-
-        ArrayList<VuforiaTrackable> allTrackables = new ArrayList<>();
-        VuforiaTrackables targetsUltimateGoal = this.vuforia.loadTrackablesFromAsset("UltimateGoal");
-
-
+        //DcMotor launchMotor;
+        //DcMotor intakeMotor;
 
         public void runOpMode() throws InterruptedException {
             //set up our driving library
@@ -39,11 +34,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
             drivingMode = 0;
             drivingLibrary.setMode(drivingMode);
 
-            autonLibrary = new AutonLibrary(drivingLibrary, vuforia);
-            allTrackables.addAll(targetsUltimateGoal);
+            autonLibrary = new AutonLibrary(drivingLibrary, this);
 
-            launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
-            intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+            //launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
+            //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
             telemetry.addData("Status", "Initialized");
             telemetry.update();
@@ -64,15 +58,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
                 telemetry.addData("Brake Mode", drivingLibrary.getMode());
 
 
-                if (gamepad2.a) {
+                /*if (gamepad2.a) {
                     intakeMotor.setPower(1);
                 }
                 if (gamepad2.right_bumper) {
                     launchMotor.setPower(1);
                 }
                 if (gamepad1.x) {
-                    autonLibrary.lineUpWithGoal(allTrackables);
-                }
+                    autonLibrary.lineUpWithGoal();
+                }*/
 
                 telemetry.addData( "Status:", "Running");
 
