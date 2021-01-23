@@ -12,6 +12,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 public class DriveOnlyForReal extends LinearOpMode {
     DrivingLibrary drivingLibrary;
     int drivingMode;
+    int leftEncoder;
+    int rightEncoder;
 
     public void runOpMode() throws InterruptedException {
         //set up our driving library
@@ -34,9 +36,14 @@ public class DriveOnlyForReal extends LinearOpMode {
                 drivingLibrary.setMode(drivingMode);
             }
 
+            leftEncoder = drivingLibrary.rightFront.getCurrentPosition();
+            rightEncoder = drivingLibrary.rightRear.getCurrentPosition();
             //sends text to driver phone
             telemetry.addData("Status", "Running");
+            telemetry.addData("Left", leftEncoder);
+            telemetry.addData("Right", rightEncoder);
             telemetry.addData("Brake Mode", drivingLibrary.getMode());
+            telemetry.update();
 
             drivingLibrary.bevelDrive(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
         }
