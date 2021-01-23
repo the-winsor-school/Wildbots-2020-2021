@@ -30,7 +30,7 @@ public class AutonLibrary {
     private OpMode opMode;
 
     // vuforia variables
-    private VuforiaLocalizer vuforia = null;
+    public VuforiaLocalizer vuforia = null;
     private ArrayList<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
     private OpenGLMatrix robotFromCamera;
     private OpenGLMatrix lastLocation = null;

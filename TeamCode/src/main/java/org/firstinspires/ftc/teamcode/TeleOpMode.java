@@ -29,7 +29,6 @@ public class TeleOpMode extends LinearOpMode {
     ArrayList<VuforiaTrackable> allTrackables = new ArrayList<>();
     VuforiaTrackables targetsUltimateGoal = this.vuforia.loadTrackablesFromAsset("UltimateGoal");
 
-
     public void runOpMode() throws InterruptedException {
         //set up our driving library
         drivingLibrary = new DrivingLibrary(this);
@@ -37,7 +36,7 @@ public class TeleOpMode extends LinearOpMode {
         drivingMode = 0;
         drivingLibrary.setMode(drivingMode);
 
-        autonLibrary = new AutonLibrary(drivingLibrary, vuforia);
+        autonLibrary = new AutonLibrary(drivingLibrary, this);
         allTrackables.addAll(targetsUltimateGoal);
 
         launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
@@ -45,6 +44,8 @@ public class TeleOpMode extends LinearOpMode {
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+        targetsUltimateGoal.activate();
 
         waitForStart();
 
@@ -69,13 +70,15 @@ public class TeleOpMode extends LinearOpMode {
                 launchMotor.setPower(1);
             }
             if (gamepad1.x) {
-                autonLibrary.lineUpWithGoal(allTrackables);
+                autonLibrary.lineUpWithGoal();
             }
+
 
             telemetry.addData("Status:", "Running");
 
             telemetry.update();
 
         }
+        targetsUltimateGoal.deactivate();
     }
 }
