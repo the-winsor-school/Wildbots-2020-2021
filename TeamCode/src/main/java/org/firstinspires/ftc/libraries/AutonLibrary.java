@@ -164,19 +164,25 @@ public class AutonLibrary {
     public float[] lineUpWithGoal () {
         float min = 3;
         float max = 17;
+        float t = 0;
+        double angleRange = .1;
+        double targetAngle = 3/2 * Math.PI;
 
-        boolean x = getImageTarget();
-        if(!x) {
+        boolean x = getImageTarget(); // do we see target?
+
+        if(!x) { // can't see target
             opMode.telemetry.addLine("no target visible");
             opMode.telemetry.update();
-            float[] speeds = new float[] {0, 0};
+            float[] speeds = new float[] {0, 0, 0};
             return speeds;
 
         }
         else {
+            //goal positions
             float goalX = 9;
             float goalY = 37;
 
+            //get current x and y
             VectorF translation = lastLocation.getTranslation();
             float fieldX = translation.get(0) / MM_PER_INCH;
             float fieldY = translation.get(1) / MM_PER_INCH;
@@ -184,37 +190,48 @@ public class AutonLibrary {
             float speedX;
             float speedY;
 
-            if(Math.abs(goalX - fieldX) < min) {
+            if(Math.abs(goalX - fieldX) < min) { // target x has been reached
                 speedX = 0;
             }
-            else if(Math.abs(goalX - fieldX) > max) {
+            else if(Math.abs(goalX - fieldX) > max) { // outside of max x - full power
                 speedX = goalX > fieldX ? 1 : -1;
             }
             else {
-                speedX = (goalX - fieldX - 1) / (max - min);
+                speedX = (goalX - fieldX - 1) / (max - min); // scale x based on distance
             }
 
-            if(Math.abs(goalY - fieldY) < min) {
+            if(Math.abs(goalY - fieldY) < min) { // target y has been reached
                 speedY = 0;
             }
-            else if(Math.abs(goalY - fieldY) > max) {
+            else if(Math.abs(goalY - fieldY) > max) { // outside of max y - full power
                 speedY = goalY > fieldY ? 1 : -1;
             }
             else {
-                speedY = (goalY - fieldY - 1) / (max - min);
+                speedY = (goalY - fieldY - 1) / (max - min); // scale y based on distance
             }
 
-            if(Math.abs(goalY - fieldY) < min && Math.abs(goalX - fieldX) < min) {
+            if (Math.abs(drivingLibrary.getIMUAngle() - targetAngle) >= .1) { // if we're outside the target range of t
+                if (drivingLibrary.getIMUAngle() > targetAngle) { // check which direction we need to turn
+                    t = .1f;
+                }
+                else {
+                    t = -.1f;
+                }
+            }
+
+            // are we within the min error range of the target position?
+            if(Math.abs(goalY - fieldY) < min && Math.abs(goalX - fieldX) < min && Math.abs(targetAngle - drivingLibrary.getIMUAngle()) < angleRange) {
                 goalReached = true;
             }
 
+            //print speeds - for debugging
             opMode.telemetry.addData("x speed", speedX);
             opMode.telemetry.addData("y speed", speedY);
             opMode.telemetry.addData("x diff", goalX - fieldX);
             opMode.telemetry.addData("y diff", goalY - fieldY);
             opMode.telemetry.update();
 
-            float[] speeds = new float[] {speedX, speedY};
+            float[] speeds = new float[] {speedX, speedY, t};
 
             return speeds;
         }
