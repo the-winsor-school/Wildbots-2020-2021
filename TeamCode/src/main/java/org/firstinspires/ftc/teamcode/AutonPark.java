@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 
-@Autonomous
+@Autonomous(name = "Scrimmage Auton Park")
 public class AutonPark extends LinearOpMode {
 
     private DrivingLibrary drivingLibrary;
@@ -26,15 +26,23 @@ public class AutonPark extends LinearOpMode {
 
         waitForStart();
 
-        //drive for (crashIntoWall) speed
         if (opModeIsActive()) {
             if (!ranOnce) {
-                drivingLibrary.drive(0, .5f, 0);
-                sleep(crashIntoWall);
+
+                // litreally drive in a straight line forwards
+                drivingLibrary.bevelDrive(0, -.5f, 0);
+                sleep(4500);
                 drivingLibrary.brakeStop();
-                drivingLibrary.drive(.5f, 0, 0);
-                sleep(parkLine);
-                drivingLibrary.brakeStop();
+
+                // adjust angle back to 0
+                while(Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
+                    if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn
+                        drivingLibrary.bevelDrive(0, 0, .1f);
+                    }
+                    else {
+                        drivingLibrary.bevelDrive(0, 0, -.1f);
+                    }
+                }
                 ranOnce = true;
             }
         }
