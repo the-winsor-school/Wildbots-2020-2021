@@ -108,34 +108,27 @@ public class AutonLibrary {
         }
     }
 
-    public double getStackHeight(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBottom){
+    public int getStackHeight(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBottom){
         opMode.telemetry.addData("Top Sensor Value", DistSenTop.getDistance(DistanceUnit.CM));
         opMode.telemetry.addData("Bottom Sensor Value", DistSenBottom.getDistance(DistanceUnit.CM));
         //if the top distance sensor senses that there is a ring less than 200 centimeters, return: four rings)
         if (DistSenTop.getDistance(DistanceUnit.CM) < 200) {
             opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 4;
             //otherwise, if the bottom distance sensor senses that there is a ring less than 200 centimeters, return: one ring)
         } else if (DistSenBottom.getDistance(DistanceUnit.CM) < 200) {
             opMode.telemetry.addData("One Ring", DistSenBottom.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 1;
             //if no sensor returns a value less than 200, there are no rings)
         } else {
             opMode.telemetry.addData("Zero Rings", DistSenBottom.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 0;
         }
-        opMode.telemetry.update();
+
     //sum (values added) and count (# of values counted) start at zero
-        double sum = 0;
-        int count = 0;
-        //will only take values until its collected 10
-        while (count < 10) {
-            // adds one to the number of values counted
-            count++;
-            sum += DistSenBottom.getDistance(DistanceUnit.CM);
-
-        }
-
-        //gets the average of the bottom sensor's values
-        opMode.telemetry.addData("Average-bottom sensor", sum / count);
-        return sum/count;
     }
 
     public boolean getImageTarget(){

@@ -62,8 +62,10 @@ public class    DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
+
         //distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
         //distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
+
 
         encoderTable = new Hashtable<Encoders, Integer>();
 

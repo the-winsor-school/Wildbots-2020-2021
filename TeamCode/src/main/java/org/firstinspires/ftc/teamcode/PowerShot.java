@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 //Names the Auton -> "name =" appears on the phone
+@Disabled
 @Autonomous(name = "JustThePowerShot")
 public class PowerShot extends LinearOpMode {
     public static final int ONE_SECOND = 1000;
@@ -30,7 +32,7 @@ public class PowerShot extends LinearOpMode {
         and launch mech facing the goal and the robot is behind the
         launch line */
         waitForStart();
-        while (opModeIsActive()) {
+       /* while (opModeIsActive()) {
             // all of this is just calling methods (see that we have not fully fleshed out takeShot)
             //moveToDistance(TARGET_1_DISTANCE);
             takeShot();
@@ -40,7 +42,7 @@ public class PowerShot extends LinearOpMode {
             takeShot();
 
             break;
-        }
+        } */
     }
 
     // when we know how, put in the code for launching
@@ -52,11 +54,17 @@ public class PowerShot extends LinearOpMode {
     // robot moves until it reaches one of the constant distance away from the right wall
     /*private void moveToDistance(double targetDistance) {
         double distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
+    //private void moveToDistance(double targetDistance) {
+        // double distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
         // when the actual distance is greater than target dist, robot keeps moving
-        while (distance >= targetDistance) {
+       // while (distance >= targetDistance) {
             //sets the direction robot will move in (Is 1 too fast?)
             drivingLibrary.bevelDrive(1, 0, 0);
             distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
         }
     }*/
+          //  drivingLibrary.bevelDrive(1, 0, 0);
+          //  distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
+        //}
+  // }
 }
