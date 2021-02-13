@@ -13,13 +13,13 @@ import java.util.*;
 public class DistSens extends LinearOpMode {
     Rev2mDistanceSensor DistSenTop;
     Rev2mDistanceSensor DistSenBottom;
+    int ringAmount = 0;
 
     //establishes the sensor names for configuration
     @Override
     public void runOpMode() throws InterruptedException {
         DistSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
         DistSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
-
         telemetry.addData("status", "initialized");
         telemetry.update();
 //prints the distance sensed by the top and bottom sensors respectively
@@ -30,16 +30,19 @@ public class DistSens extends LinearOpMode {
             //if the top distance sensor senses that there is a ring less than 200 centimeters, return: four rings)
             if (DistSenTop.getDistance(DistanceUnit.CM) < 200) {
                 telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
+                ringAmount = 4;
                 //otherwise, if the bottom distance sensor senses that there is a ring less than 200 centimeters, return: one ring)
             } else if (DistSenBottom.getDistance(DistanceUnit.CM) < 200) {
                 telemetry.addData("One Ring", DistSenBottom.getDistance(DistanceUnit.CM));
+                ringAmount = 1;
                 //if no sensor returns a value less than 200, there are no rings)
             } else {
                 telemetry.addData("Zero Rings", DistSenBottom.getDistance(DistanceUnit.CM));
+                ringAmount = 0;
             }
             telemetry.update();
 //sum (values added) and count (# of values counted) start at zero
-            double sum = 0;
+          /*  double sum = 0;
             int count = 0;
             //will only take values until its collected 10
             while (count < 10) {
@@ -48,10 +51,9 @@ public class DistSens extends LinearOpMode {
                 sum += DistSenBottom.getDistance(DistanceUnit.CM);
 
             }
-
             //gets the average of the bottom sensor's values
             telemetry.addData("Average-bottom sensor", sum / count);
-
+*/
         }
     }
 }

@@ -94,9 +94,9 @@ public class AutonLibrary {
         allTrackables.addAll(targetsUltimateGoal);
 
         // camera location relative to robot center
-        final float CAMERA_FORWARD_DISPLACEMENT = 0;
-        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * MM_PER_INCH;
-        final float CAMERA_LEFT_DISPLACEMENT = 6.0f * MM_PER_INCH;
+        final float CAMERA_FORWARD_DISPLACEMENT = 4f * MM_PER_INCH;
+        final float CAMERA_VERTICAL_DISPLACEMENT = 8f * MM_PER_INCH;
+        final float CAMERA_LEFT_DISPLACEMENT = 0f * MM_PER_INCH;
 
         this.robotFromCamera = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -108,15 +108,18 @@ public class AutonLibrary {
         }
     }
 
+
     public double[] getDistSensValues(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBottom){
         opMode.telemetry.addData("Top Sensor Value", DistSenTop.getDistance(DistanceUnit.CM));
         opMode.telemetry.addData("Bottom Sensor Value", DistSenBottom.getDistance(DistanceUnit.CM));
         //if the top distance sensor senses that there is a ring less than 200 centimeters, return: four rings)
         if (DistSenTop.getDistance(DistanceUnit.CM) < 200) {
             opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
             //otherwise, if the bottom distance sensor senses that there is a ring less than 200 centimeters, return: one ring)
         } else if (DistSenBottom.getDistance(DistanceUnit.CM) < 200) {
             opMode.telemetry.addData("One Ring", DistSenBottom.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
             //if no sensor returns a value less than 200, there are no rings)
         } else {
             opMode.telemetry.addData("Zero Rings", DistSenBottom.getDistance(DistanceUnit.CM));
@@ -175,14 +178,37 @@ public class AutonLibrary {
         return false;
     }
 
+    public boolean getAllianceTarget(){
+        boolean targetVisible = false;
+
+        targetVisible = false;
+        VuforiaTrackable x = null;
+        for (VuforiaTrackable trackable : allTrackables) {
+            if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                opMode.telemetry.addData("Visible Target", trackable.getName());
+                opMode.telemetry.update();
+                targetVisible = true;
+
+                if(trackable.getName().equals("Blue Alliance Target")) {
+                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                    if (robotLocationTransform != null) {
+                        lastLocation = robotLocationTransform;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public float[] lineUpWithGoal () {
         float min = 3;
         float max = 17;
         float t = 0;
         double angleRange = .1;
-        double targetAngle = 3/2 * Math.PI;
+        double targetAngle = -1/2 * Math.PI;
 
-        boolean x = getImageTarget(); // do we see target?
+        boolean x = getAllianceTarget(); // do we see target?
 
         if(!x) { // can't see target
             opMode.telemetry.addLine("no target visible");
@@ -193,8 +219,9 @@ public class AutonLibrary {
         }
         else {
             //goal positions
-            float goalX = 9;
-            float goalY = 37;
+            float goalX = -22.4f;
+            float goalY = 41.1f;
+
 
             //get current x and y
             VectorF translation = lastLocation.getTranslation();
@@ -239,6 +266,9 @@ public class AutonLibrary {
             }
 
             //print speeds - for debugging
+
+            opMode.telemetry.addData("x pos", fieldX);
+            opMode.telemetry.addData("y pos", fieldY);
             opMode.telemetry.addData("x speed", speedX);
             opMode.telemetry.addData("y speed", speedY);
             opMode.telemetry.addData("x diff", goalX - fieldX);

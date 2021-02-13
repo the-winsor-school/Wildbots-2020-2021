@@ -28,9 +28,14 @@ public class AutonPark extends LinearOpMode {
 
         if (opModeIsActive()) {
             if (!ranOnce) {
+
                 // litreally drive in a straight line forwards
                 drivingLibrary.bevelDrive(0, -.5f, 0);
-                sleep(4500);
+                sleep(8500);
+                drivingLibrary.brakeStop();
+
+                drivingLibrary.bevelDrive(0, .5f, 0);
+                sleep(3000);
                 drivingLibrary.brakeStop();
 
                 // adjust angle back to 0
