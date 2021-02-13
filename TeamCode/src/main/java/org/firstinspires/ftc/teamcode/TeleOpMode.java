@@ -39,7 +39,6 @@ public class TeleOpMode extends LinearOpMode {
         drivingLibrary.setSpeed(1);
         drivingMode = 0;
         drivingLibrary.setMode(drivingMode);
-
         autonLibrary = new AutonLibrary(drivingLibrary, this);
 
         toGoal = false;
