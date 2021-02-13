@@ -31,8 +31,8 @@ public class    DrivingLibrary {
     public DcMotor rightFront;
     public DcMotor leftRear;
     public DcMotor rightRear;
-    public Rev2mDistanceSensor distSenTop;
-    public Rev2mDistanceSensor distSenBottom;
+    //public Rev2mDistanceSensor distSenTop;
+    //public Rev2mDistanceSensor distSenBottom;
 
     private DcMotor[] allMotors;
     private HardwareMap hardwareMap;
@@ -62,8 +62,8 @@ public class    DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
-        distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
-        distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
+        //distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
+        //distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
 
         encoderTable = new Hashtable<Encoders, Integer>();
 
@@ -122,11 +122,11 @@ public class    DrivingLibrary {
 
     //strafing on one joystick with twist on the other
     //uses joystick 1 x, joystick 1 y, and joystick 2 x
+    @Deprecated
     public void drive(float x, float y, float t) {
         double vd = strafeSpeed(x, y);
         theta = Math.atan2(y, x);
         x = 0;
-        theta = Math.atan2(y, x);
         double vt = t;
 
         //in order -- LF, RF, LR, RR
@@ -139,8 +139,8 @@ public class    DrivingLibrary {
 
         strafeScale(strafePowers);
 
-        leftFront.setPower(-strafePowers[0] * speedSetting);
-        rightFront.setPower(-strafePowers[1] * speedSetting);
+        leftFront.setPower(strafePowers[0] * speedSetting);
+        rightFront.setPower(strafePowers[1] * speedSetting);
         leftRear.setPower(strafePowers[2] * speedSetting);
         rightRear.setPower(strafePowers[3] * speedSetting);
     }

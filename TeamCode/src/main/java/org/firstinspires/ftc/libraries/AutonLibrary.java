@@ -94,9 +94,9 @@ public class AutonLibrary {
         allTrackables.addAll(targetsUltimateGoal);
 
         // camera location relative to robot center
-        final float CAMERA_FORWARD_DISPLACEMENT = 0;
-        final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * MM_PER_INCH;
-        final float CAMERA_LEFT_DISPLACEMENT = 6.0f * MM_PER_INCH;
+        final float CAMERA_FORWARD_DISPLACEMENT = 4f * MM_PER_INCH;
+        final float CAMERA_VERTICAL_DISPLACEMENT = 8f * MM_PER_INCH;
+        final float CAMERA_LEFT_DISPLACEMENT = 0f * MM_PER_INCH;
 
         this.robotFromCamera = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
@@ -161,22 +161,51 @@ public class AutonLibrary {
         return false;
     }
 
+    public boolean getAllianceTarget(){
+        boolean targetVisible = false;
+
+        targetVisible = false;
+        VuforiaTrackable x = null;
+        for (VuforiaTrackable trackable : allTrackables) {
+            if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                opMode.telemetry.addData("Visible Target", trackable.getName());
+                opMode.telemetry.update();
+                targetVisible = true;
+
+                if(trackable.getName().equals("Blue Alliance Target")) {
+                    OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                    if (robotLocationTransform != null) {
+                        lastLocation = robotLocationTransform;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public float[] lineUpWithGoal () {
         float min = 3;
         float max = 17;
+        float t = 0;
+        double angleRange = .1;
+        double targetAngle = -1/2 * Math.PI;
 
-        boolean x = getImageTarget();
-        if(!x) {
+        boolean x = getAllianceTarget(); // do we see target?
+
+        if(!x) { // can't see target
             opMode.telemetry.addLine("no target visible");
             opMode.telemetry.update();
-            float[] speeds = new float[] {0, 0};
+            float[] speeds = new float[] {0, 0, 0};
             return speeds;
 
         }
         else {
-            float goalX = 9;
-            float goalY = 37;
+            //goal positions
+            float goalX = -22.4f;
+            float goalY = 41.1f;
 
+            //get current x and y
             VectorF translation = lastLocation.getTranslation();
             float fieldX = translation.get(0) / MM_PER_INCH;
             float fieldY = translation.get(1) / MM_PER_INCH;
@@ -184,37 +213,50 @@ public class AutonLibrary {
             float speedX;
             float speedY;
 
-            if(Math.abs(goalX - fieldX) < min) {
+            if(Math.abs(goalX - fieldX) < min) { // target x has been reached
                 speedX = 0;
             }
-            else if(Math.abs(goalX - fieldX) > max) {
+            else if(Math.abs(goalX - fieldX) > max) { // outside of max x - full power
                 speedX = goalX > fieldX ? 1 : -1;
             }
             else {
-                speedX = (goalX - fieldX - 1) / (max - min);
+                speedX = (goalX - fieldX - 1) / (max - min); // scale x based on distance
             }
 
-            if(Math.abs(goalY - fieldY) < min) {
+            if(Math.abs(goalY - fieldY) < min) { // target y has been reached
                 speedY = 0;
             }
-            else if(Math.abs(goalY - fieldY) > max) {
+            else if(Math.abs(goalY - fieldY) > max) { // outside of max y - full power
                 speedY = goalY > fieldY ? 1 : -1;
             }
             else {
-                speedY = (goalY - fieldY - 1) / (max - min);
+                speedY = (goalY - fieldY - 1) / (max - min); // scale y based on distance
             }
 
-            if(Math.abs(goalY - fieldY) < min && Math.abs(goalX - fieldX) < min) {
+            if (Math.abs(drivingLibrary.getIMUAngle() - targetAngle) >= .1) { // if we're outside the target range of t
+                if (drivingLibrary.getIMUAngle() > targetAngle) { // check which direction we need to turn
+                    t = .1f;
+                }
+                else {
+                    t = -.1f;
+                }
+            }
+
+            // are we within the min error range of the target position?
+            if(Math.abs(goalY - fieldY) < min && Math.abs(goalX - fieldX) < min && Math.abs(targetAngle - drivingLibrary.getIMUAngle()) < angleRange) {
                 goalReached = true;
             }
 
+            //print speeds - for debugging
+            opMode.telemetry.addData("x pos", fieldX);
+            opMode.telemetry.addData("y pos", fieldY);
             opMode.telemetry.addData("x speed", speedX);
             opMode.telemetry.addData("y speed", speedY);
             opMode.telemetry.addData("x diff", goalX - fieldX);
             opMode.telemetry.addData("y diff", goalY - fieldY);
             opMode.telemetry.update();
 
-            float[] speeds = new float[] {speedX, speedY};
+            float[] speeds = new float[] {speedX, speedY, t};
 
             return speeds;
         }
