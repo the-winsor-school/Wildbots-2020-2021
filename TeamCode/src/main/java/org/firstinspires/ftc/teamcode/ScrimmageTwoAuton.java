@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.libraries.AutonLibrary;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 
-
+@Autonomous
 public class ScrimmageTwoAuton extends LinearOpMode {
 
     private DrivingLibrary drivingLibrary;
@@ -42,17 +43,18 @@ public class ScrimmageTwoAuton extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) if (!ranOnce) {
+            numRings = autonLibrary.getStackHeight(distTop, distBot);
             leftWobble.setPosition(-1);
             rightWobble.setPosition(1);
             //moves left
-            drivingLibrary.bevelDrive(-.5f, -.5f, 0);
-            sleep(2000);
+            drivingLibrary.bevelDrive(-.5f, 0, 0);
+            sleep(1000);
+            drivingLibrary.brakeStop();
             //moves forward to park line
             drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(8500);
+            sleep(4000);
             drivingLibrary.brakeStop();
 
-            numRings = autonLibrary.getStackHeight(distTop, distBot);
 
             switch (numRings) {
                 case 0:
@@ -67,6 +69,8 @@ public class ScrimmageTwoAuton extends LinearOpMode {
                     break;
                 case 1:
                     // go right
+                    leftWobble.setPosition(-0.3);
+                    rightWobble.setPosition(0.3);
                     drivingLibrary.bevelDrive(.5f, 0, 0);
                     sleep(2000);
                     drivingLibrary.brakeStop();
@@ -77,7 +81,7 @@ public class ScrimmageTwoAuton extends LinearOpMode {
                     break;
                 case 4:
                     drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(8500);
+                    sleep(4000);
                     drivingLibrary.brakeStop();
                     //move right
                     drivingLibrary.bevelDrive(.5f, 0, 0);
@@ -85,7 +89,7 @@ public class ScrimmageTwoAuton extends LinearOpMode {
                     drivingLibrary.brakeStop();
                     //move backwards
                     drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(8500);
+                    sleep(4000);
                     drivingLibrary.brakeStop();
                     break;
 
