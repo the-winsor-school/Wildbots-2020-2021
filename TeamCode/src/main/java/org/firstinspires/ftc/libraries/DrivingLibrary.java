@@ -31,8 +31,13 @@ public class    DrivingLibrary {
     public DcMotor rightFront;
     public DcMotor leftRear;
     public DcMotor rightRear;
+
     //public Rev2mDistanceSensor distSenTop;
     //public Rev2mDistanceSensor distSenBottom;
+
+
+    public DcMotor rightEncoder;
+    public DcMotor leftEncoder;
 
     private DcMotor[] allMotors;
     private HardwareMap hardwareMap;
@@ -356,36 +361,36 @@ public class    DrivingLibrary {
 
     //get current encoder values
     public int[] getEncoderValues() {
-        for (int i = 0; i < 4; i++) {
-            encoderValues[i] = allMotors[i].getCurrentPosition();
-        }
+
+        encoderValues[0] = leftEncoder.getCurrentPosition();
+        encoderValues[1] = rightEncoder.getCurrentPosition();
+
         return encoderValues;
     }
 
     //print current encoder values to driver phone
     public void printEncoderValues() {
         getEncoderValues();
-        opMode.telemetry.addData("front left encoder", encoderValues[0]);
+        opMode.telemetry.addData("left encoder", encoderValues[0]);
         opMode.telemetry.addData("front right encoder", encoderValues[1]);
-        opMode.telemetry.addData("rear left encoder", encoderValues[2]);
-        opMode.telemetry.addData("rear right encoder", encoderValues[3]);
     }
 
     public void distanceToEncoderValue(int dist){
-        encoderTable.put(Encoders.LF, (int)(-61.3*dist+26.6));
-        encoderTable.put(Encoders.RF, (int)(-61.8*dist+18.2));
-        encoderTable.put(Encoders.LR, (int)(-61.8*dist+26.4));
-        encoderTable.put(Encoders.RR, (int)(-61.7*dist+22.6));
+        //figure out circumference and ticks per revolution because these are old values
+        int[] e = getEncoderValues();
+        int wheelCircumference = 1; //FIND (;__;) "BLACK OMNIWHEELS" IS NOT A SPECIFIC ENOUGH GOOGLE FOR ME TO FIND THE BRAND >:(
+        encoderTable.put(Encoders.LF, (int)(dist+e[0]/2048*wheelCircumference));
+        encoderTable.put(Encoders.RF, (int)(dist+e[1]/2048*wheelCircumference));
     }
     public int getLeftFrontEncoderValueSpecifically(){
+        // i think this does not need to exist anymore but i'm not confident enough in that assertion to delete this
         return encoderTable.get(Encoders.LF);
     }
     public void setEncoders(int dist){
         distanceToEncoderValue(dist);
-        leftFront.setTargetPosition(encoderTable.get(Encoders.LF));
-        rightFront.setTargetPosition(encoderTable.get(Encoders.RF));
-        leftRear.setTargetPosition(encoderTable.get(Encoders.LR));
-        rightRear.setTargetPosition(encoderTable.get(Encoders.RR));
+        leftEncoder.setTargetPosition(encoderTable.get(Encoders.LF));
+        rightEncoder.setTargetPosition(encoderTable.get(Encoders.RF));
+
         }
     public boolean motorsBusy() {
         if(leftFront.isBusy() || rightRear.isBusy() || leftRear.isBusy()) {
@@ -436,5 +441,6 @@ public class    DrivingLibrary {
         double deltaY=deltaS*Math.sin(getIMUAngle()+halfDeltaTheta);
         return deltaY;
     }
+
 
 }
