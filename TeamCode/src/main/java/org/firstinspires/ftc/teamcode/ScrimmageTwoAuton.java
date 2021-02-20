@@ -12,6 +12,7 @@ import org.firstinspires.ftc.libraries.DrivingLibrary;
 public class ScrimmageTwoAuton extends LinearOpMode {
 
     private DrivingLibrary drivingLibrary;
+    AutonLibrary autonLibrary;
     //variables:
     private static final float crashIntoWall = .50f; //figure out actual time but this is the time it takes to get to the left wall
     private static final long parkLine = 1000; //Time to get to line
@@ -36,7 +37,7 @@ public class ScrimmageTwoAuton extends LinearOpMode {
         rightWobble = hardwareMap.get(Servo.class, "rightWobble");
 
 
-        AutonLibrary autonLibrary = null;
+        autonLibrary = new AutonLibrary(drivingLibrary, this);
         //ensures that the code will only run once
         boolean ranOnce = false;
 
@@ -46,53 +47,68 @@ public class ScrimmageTwoAuton extends LinearOpMode {
             numRings = autonLibrary.getStackHeight(distTop, distBot);
             leftWobble.setPosition(-1);
             rightWobble.setPosition(1);
+            sleep(500);
             //moves left
-            drivingLibrary.bevelDrive(-.5f, 0, 0);
-            sleep(1000);
+            drivingLibrary.bevelDrive(.5f, 0, 0);
+            sleep(2000);
             drivingLibrary.brakeStop();
+            //corrects angle
+            while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
+                if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn
+                    drivingLibrary.bevelDrive(0, 0, .1f);
+                } else {
+                    drivingLibrary.bevelDrive(0, 0, -.1f);
+
+                    ranOnce = true;
+                }
+
+            }
             //moves forward to park line
             drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(4000);
+            sleep(4500);
             drivingLibrary.brakeStop();
 
 
             switch (numRings) {
                 case 0:
-                    //move right
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(2000);
-                    drivingLibrary.brakeStop();
                     //move backwards
                     drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(2000);
+                    sleep(1000);
+                    drivingLibrary.brakeStop();
+                    leftWobble.setPosition(1);
+                    rightWobble.setPosition(-1);
+                    drivingLibrary.bevelDrive(-.5f, 0, 0);
+                    sleep(1500);
+                    drivingLibrary.bevelDrive(0, -.5f, 0);
+                    sleep(1500);
                     drivingLibrary.brakeStop();
                     break;
                 case 1:
-                    // go right
-                    leftWobble.setPosition(-0.3);
-                    rightWobble.setPosition(0.3);
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(2000);
-                    drivingLibrary.brakeStop();
                     //go forwards
                     drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(3000);
+                    sleep(1800);
+                    // go right
+                    drivingLibrary.bevelDrive(-.5f, 0, 0);
+                    sleep(2500);
                     drivingLibrary.brakeStop();
+                    drivingLibrary.bevelDrive(0, .5f, 0);
+                    sleep(1700);
+                    drivingLibrary.brakeStop();
+                    leftWobble.setPosition(1);
+                    rightWobble.setPosition(-1);
                     break;
                 case 4:
                     drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(4000);
+                    sleep(3500);
                     drivingLibrary.brakeStop();
-                    //move right
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(2000);
+                    leftWobble.setPosition(1);
+                    rightWobble.setPosition(-1);
                     drivingLibrary.brakeStop();
                     //move backwards
                     drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(4000);
+                    sleep(3000);
                     drivingLibrary.brakeStop();
                     break;
-
             }
             while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
                 if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn

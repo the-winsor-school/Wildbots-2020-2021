@@ -110,27 +110,12 @@ public class AutonLibrary {
 
 
     public double[] getDistSensValues(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBottom){
-        opMode.telemetry.addData("Top Sensor Value", DistSenTop.getDistance(DistanceUnit.CM));
-        opMode.telemetry.addData("Bottom Sensor Value", DistSenBottom.getDistance(DistanceUnit.CM));
-        //if the top distance sensor senses that there is a ring less than 200 centimeters, return: four rings)
-        if (DistSenTop.getDistance(DistanceUnit.CM) < 200) {
-            opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
-            opMode.telemetry.update();
-            //otherwise, if the bottom distance sensor senses that there is a ring less than 200 centimeters, return: one ring)
-        } else if (DistSenBottom.getDistance(DistanceUnit.CM) < 200) {
-            opMode.telemetry.addData("One Ring", DistSenBottom.getDistance(DistanceUnit.CM));
-            opMode.telemetry.update();
-            //if no sensor returns a value less than 200, there are no rings)
-        } else {
-            opMode.telemetry.addData("Zero Rings", DistSenBottom.getDistance(DistanceUnit.CM));
-        }
-        opMode.telemetry.update();
     //sum (values added) and count (# of values counted) start at zero
         double sumbot = 0;
         double sumtop = 0;
         int count = 0;
         //will only take values until its collected 10
-        while (count < 10) {
+        while (count < 50) {
             // adds one to the number of values counted
             count++;
             sumbot += DistSenBottom.getDistance(DistanceUnit.CM);
@@ -146,12 +131,18 @@ public class AutonLibrary {
 
     public int getStackHeight(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBottom) {
         double[] distSenValues = getDistSensValues(DistSenTop, DistSenBottom);
-        if(distSenValues[0] > 200) {
-            return 0;
-        } else if (distSenValues[0] < 200 && distSenValues[1] > 200){
+        if(distSenValues[1] < 200) {
+            opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 4;
+        } else if (distSenValues[1] < 600){
+            opMode.telemetry.addData("One Ring", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
             return 1;
         } else {
-            return 4;
+            opMode.telemetry.addData("Zero Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 0;
         }
     }
 
