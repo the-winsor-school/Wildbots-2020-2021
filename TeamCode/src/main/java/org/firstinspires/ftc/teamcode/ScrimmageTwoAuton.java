@@ -65,7 +65,7 @@ public class ScrimmageTwoAuton extends LinearOpMode {
             }
             //moves forward to park line
             drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(4500);
+            sleep(4000);
             drivingLibrary.brakeStop();
 
 
@@ -86,13 +86,13 @@ public class ScrimmageTwoAuton extends LinearOpMode {
                 case 1:
                     //go forwards
                     drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(1800);
+                    sleep(1500);
                     // go right
                     drivingLibrary.bevelDrive(-.5f, 0, 0);
                     sleep(2500);
                     drivingLibrary.brakeStop();
                     drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(1700);
+                    sleep(1300);
                     drivingLibrary.brakeStop();
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
