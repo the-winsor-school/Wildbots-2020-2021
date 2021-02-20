@@ -31,8 +31,8 @@ public class    DrivingLibrary {
     public DcMotor rightFront;
     public DcMotor leftRear;
     public DcMotor rightRear;
-    public Rev2mDistanceSensor distSenTop;
-    public Rev2mDistanceSensor distSenBottom;
+    //public Rev2mDistanceSensor distSenTop;
+    //public Rev2mDistanceSensor distSenBottom;
 
     private DcMotor[] allMotors;
     private HardwareMap hardwareMap;
@@ -53,6 +53,7 @@ public class    DrivingLibrary {
     private double strafeError;
     private double targetAngle;
     private Hashtable<Encoders, Integer> encoderTable;
+    private Hashtable<Encoders, Integer> recordEncoderTable;
 
     public DrivingLibrary(OpMode opMode) {
         this.opMode = opMode;
@@ -62,10 +63,11 @@ public class    DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
-        distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
-        distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
+        //distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
+        //distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
 
         encoderTable = new Hashtable<Encoders, Integer>();
+        recordEncoderTable=new Hashtable<Encoders,Integer>();
 
 
         // MOTOR ORDER: LF, RF, LR, RR
@@ -122,11 +124,11 @@ public class    DrivingLibrary {
 
     //strafing on one joystick with twist on the other
     //uses joystick 1 x, joystick 1 y, and joystick 2 x
+    @Deprecated
     public void drive(float x, float y, float t) {
         double vd = strafeSpeed(x, y);
         theta = Math.atan2(y, x);
         x = 0;
-        theta = Math.atan2(y, x);
         double vt = t;
 
         //in order -- LF, RF, LR, RR
@@ -139,8 +141,8 @@ public class    DrivingLibrary {
 
         strafeScale(strafePowers);
 
-        leftFront.setPower(-strafePowers[0] * speedSetting);
-        rightFront.setPower(-strafePowers[1] * speedSetting);
+        leftFront.setPower(strafePowers[0] * speedSetting);
+        rightFront.setPower(strafePowers[1] * speedSetting);
         leftRear.setPower(strafePowers[2] * speedSetting);
         rightRear.setPower(strafePowers[3] * speedSetting);
     }
@@ -359,6 +361,36 @@ public class    DrivingLibrary {
             }
         }
     }
+    public void setRecordEncoderTable(){
+        recordEncoderTable.put(Encoders.LF, leftFront.getCurrentPosition());
+        recordEncoderTable.put(Encoders.RF, rightFront.getCurrentPosition());
 
+    }
+    private double getDeltaS(){
+        double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
+        double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
+        double s =(Sr-Sl)/2;
+        return s;
+    }
+    private double getDeltaTheta() {
+        double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
+        double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
+        double theta=(Sr-Sl)/13.25;
+        return theta;
+    }
+    public double getDeltaX(){
+        //its delta theta divided by two because that's how the math
+        //and I didn't want to make another variable :/
+        double halfDeltaTheta = getDeltaTheta()/2;
+        double deltaS = getDeltaS();
+        double deltaX=deltaS*Math.cos(getIMUAngle()+halfDeltaTheta);
+        return deltaX;
+    }
+    public double getDeltaY(){
+        double halfDeltaTheta = getDeltaTheta()/2;
+        double deltaS = getDeltaS();
+        double deltaY=deltaS*Math.sin(getIMUAngle()+halfDeltaTheta);
+        return deltaY;
+    }
 
 }

@@ -32,11 +32,11 @@ public class PowerShot extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             // all of this is just calling methods (see that we have not fully fleshed out takeShot)
-            moveToDistance(TARGET_1_DISTANCE);
+            //moveToDistance(TARGET_1_DISTANCE);
             takeShot();
-            moveToDistance(TARGET_2_DISTANCE);
+            //moveToDistance(TARGET_2_DISTANCE);
             takeShot();
-            moveToDistance(TARGET_3_DISTANCE);
+            //moveToDistance(TARGET_3_DISTANCE);
             takeShot();
 
             break;
@@ -50,7 +50,7 @@ public class PowerShot extends LinearOpMode {
     }
 
     // robot moves until it reaches one of the constant distance away from the right wall
-    private void moveToDistance(double targetDistance) {
+    /*private void moveToDistance(double targetDistance) {
         double distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
         // when the actual distance is greater than target dist, robot keeps moving
         while (distance >= targetDistance) {
@@ -58,5 +58,5 @@ public class PowerShot extends LinearOpMode {
             drivingLibrary.bevelDrive(1, 0, 0);
             distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
         }
-    }
+    }*/
 }
