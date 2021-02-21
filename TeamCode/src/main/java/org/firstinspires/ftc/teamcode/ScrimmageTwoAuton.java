@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.libraries.AutonLibrary;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous
 public class ScrimmageTwoAuton extends LinearOpMode {
@@ -22,6 +24,8 @@ public class ScrimmageTwoAuton extends LinearOpMode {
     Rev2mDistanceSensor distBot;
     Servo leftWobble;
     Servo rightWobble;
+    DcMotor launchMotor;
+    DcMotor intakeMotor;
 
     //initializing
     @Override
@@ -35,6 +39,8 @@ public class ScrimmageTwoAuton extends LinearOpMode {
         distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
         leftWobble = hardwareMap.get(Servo.class, "leftWobble");
         rightWobble = hardwareMap.get(Servo.class, "rightWobble");
+        launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 
         autonLibrary = new AutonLibrary(drivingLibrary, this);
@@ -43,7 +49,7 @@ public class ScrimmageTwoAuton extends LinearOpMode {
 
         waitForStart();
 
-        if (opModeIsActive()) if (!ranOnce) {
+        if (opModeIsActive()) {
             numRings = autonLibrary.getStackHeight(distTop, distBot);
             leftWobble.setPosition(-1);
             rightWobble.setPosition(1);
@@ -108,18 +114,38 @@ public class ScrimmageTwoAuton extends LinearOpMode {
                     drivingLibrary.bevelDrive(0, .5f, 0);
                     sleep(3000);
                     drivingLibrary.brakeStop();
+                    drivingLibrary.bevelDrive(-.5f, 0, 0); // only put this in case 4 rings
+                    sleep(1000);
+                    drivingLibrary.brakeStop();
                     break;
             }
-            while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
-                if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn
-                    drivingLibrary.bevelDrive(0, 0, .1f);
+
+
+            /*
+            while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI/2) > .1) {
+                if (drivingLibrary.getIMUAngle() > Math.PI/2) { // check which direction we need to turn
+                    drivingLibrary.bevelDrive(0, 0, .5f);
                 } else {
-                    drivingLibrary.bevelDrive(0, 0, -.1f);
-
-                    ranOnce = true;
+                    drivingLibrary.bevelDrive(0, 0, -.5f);
                 }
-
             }
+            drivingLibrary.brakeStop();
+
+            while(distBot.getDistance(DistanceUnit.CM) > 65) {
+                drivingLibrary.bevelDrive(.5f, 0, 0);
+            }
+            drivingLibrary.brakeStop();
+
+            while(distTop.getDistance(DistanceUnit.CM) < 80) {
+                drivingLibrary.bevelDrive(0, .5f, 0);
+            }
+            drivingLibrary.brakeStop();
+
+            launchMotor.setPower(1);
+            sleep(2000);
+            intakeMotor.setPower(.5);
+
+            sleep(10000);*/
         }
     }
 }

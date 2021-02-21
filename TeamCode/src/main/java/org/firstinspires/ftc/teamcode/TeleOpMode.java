@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,7 +9,6 @@ import org.firstinspires.ftc.libraries.AutonLibrary;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.ArrayList;
 
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 public class TeleOpMode extends LinearOpMode {
     //drive train
     DrivingLibrary drivingLibrary;
-    AutonLibrary autonLibrary;
+    //AutonLibrary autonLibrary;
     int drivingMode;
     VuforiaLocalizer vuforia;
 
@@ -27,9 +25,11 @@ public class TeleOpMode extends LinearOpMode {
 
     float intakePower = 0.5f;
     float launchPower = 1f;
+    float launchTest = 0;
     boolean intakeOn;
 
-    DcMotor launchMotor;
+    DcMotor launchMotor1;
+    DcMotor launchMotor2;
     DcMotor intakeMotor;
 
 
@@ -43,15 +43,16 @@ public class TeleOpMode extends LinearOpMode {
         drivingLibrary.setMode(drivingMode);
 
 
-        autonLibrary = new AutonLibrary(drivingLibrary, this);
+        //autonLibrary = new AutonLibrary(drivingLibrary, this);
 
-        launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
+        launchMotor1 = hardwareMap.get(DcMotor.class, "launchMotor1");
+        launchMotor2 = hardwareMap.get(DcMotor.class, "launchMotor2");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        autonLibrary.targetsUltimateGoal.activate();
+        //autonLibrary.targetsUltimateGoal.activate();
 
         waitForStart();
 
@@ -70,9 +71,9 @@ public class TeleOpMode extends LinearOpMode {
 
 
             // intake controls
-            if (gamepad2.a) {
+            /*if (gamepad2.a) {
                 intakeOn = !intakeOn;
-            }
+            }*/
 
             if(gamepad2.a) {
                 intakeMotor.setPower(intakePower);
@@ -81,24 +82,48 @@ public class TeleOpMode extends LinearOpMode {
                 intakeMotor.setPower(-intakePower);
             }
             else {
-                intakeMotor.setPower(gamepad2.left_trigger); // might need to become negative
+                intakeMotor.setPower(0);
             }
 
             // launching controls
             if (gamepad2.x) {
-                launchMotor.setPower(launchPower);
+                launchMotor1.setPower(launchPower);
+                launchMotor2.setPower(launchPower);
             }
-            else {
-                launchMotor.setPower(gamepad2.right_trigger); // might need to become negative
+            else if (gamepad2.y) { // this is here for testing values
+                /*launchMotor1.setPower(gamepad2.right_trigger); // might need to become negative
+                launchMotor2.setPower(gamepad2.left_trigger);*/
+
+                launchMotor1.setPower(launchTest);
+                launchMotor2.setPower(launchTest);
+            }
+            else if(gamepad2.left_bumper) {
+                launchMotor1.setPower(0);
+                launchMotor2.setPower(0);
             }
 
-            if(gamepad1.x) {
+            if(gamepad2.dpad_up) {
+                if(launchTest < 1.001) {
+                    launchTest += .001;
+                }
+            }
+            if(gamepad2.dpad_down) {
+                if(launchTest > .001) {
+                    launchTest -= .001;
+                }
+            }
+
+            telemetry.addData("launch power", launchTest);
+            telemetry.addData("robot angle", drivingLibrary.getIMUAngle());
+            telemetry.update();
+
+            /*if(gamepad1.x) {
                 if (!autonLibrary.goalReached) {
                     speeds = autonLibrary.lineUpWithGoal();
                     drivingLibrary.bevelDrive(speeds[0], speeds[1], speeds[2]);
                 }
                 autonLibrary.goalReached = false;
-            }
+            }*/
 
 
 
@@ -109,7 +134,7 @@ public class TeleOpMode extends LinearOpMode {
             telemetry.update();
         }
 
-        autonLibrary.targetsUltimateGoal.deactivate();
+        //autonLibrary.targetsUltimateGoal.deactivate();
     }
 
 }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -14,6 +15,8 @@ public class ActonColorSensPark extends LinearOpMode {
     private static final long crashIntoWall = 500; //figure out actual time but this is the time it takes to get to the left wall
     private static final long parkLine = 4000; //Time to get to line
     ColorSensor color_sensor;
+
+    RevColorSensorV3 colorSensor;
 
     @Override
     public void internalPostInitLoop() {
@@ -61,6 +64,11 @@ public class ActonColorSensPark extends LinearOpMode {
                 while (isGray()) {
                     drivingLibrary.drive(.5f, 0, 0);
                 }
+
+                colorSensor.red();
+                colorSensor.green();
+                colorSensor.blue();
+                colorSensor.getLightDetected();
 
                 stop();
             }
