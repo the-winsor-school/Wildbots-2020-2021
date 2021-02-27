@@ -120,8 +120,6 @@ public class ScrimmageTwoAuton extends LinearOpMode {
                     break;
             }
 
-
-            /*
             while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI/2) > .1) {
                 if (drivingLibrary.getIMUAngle() > Math.PI/2) { // check which direction we need to turn
                     drivingLibrary.bevelDrive(0, 0, .5f);
@@ -141,11 +139,28 @@ public class ScrimmageTwoAuton extends LinearOpMode {
             }
             drivingLibrary.brakeStop();
 
+            drivingLibrary.spinToAngle(-0.03591903);
             launchMotor.setPower(1);
-            sleep(2000);
+            sleep(500);
+            intakeMotor.setPower(0.5);
+            sleep(500);
+            launchMotor.setPower(0);
+            intakeMotor.setPower(0);
+            drivingLibrary.spinToAngle(-0.09314792);
+            launchMotor.setPower(1);
+            sleep(500);
             intakeMotor.setPower(.5);
+            sleep(500);
+            launchMotor.setPower(0);
+            intakeMotor.setPower(0);
+            drivingLibrary.spinToAngle(0.1648029);
+            launchMotor.setPower(1);
+            sleep(500);
+            launchMotor.setPower(0);
+            intakeMotor.setPower(0);
 
-            sleep(10000);*/
+            drivingLibrary.bevelDrive(0, -.5f, 0);
+            sleep(3000);
         }
     }
 }

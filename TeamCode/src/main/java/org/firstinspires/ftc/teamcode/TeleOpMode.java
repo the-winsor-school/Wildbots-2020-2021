@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.enums.DrivingMode;
 import org.firstinspires.ftc.libraries.AutonLibrary;
@@ -31,6 +32,8 @@ public class TeleOpMode extends LinearOpMode {
     DcMotor launchMotor1;
     DcMotor launchMotor2;
     DcMotor intakeMotor;
+    Servo rightWobble;
+    Servo leftWobble;
 
 
     ArrayList<VuforiaTrackable> allTrackables = new ArrayList<>();
@@ -48,6 +51,8 @@ public class TeleOpMode extends LinearOpMode {
         launchMotor1 = hardwareMap.get(DcMotor.class, "launchMotor1");
         launchMotor2 = hardwareMap.get(DcMotor.class, "launchMotor2");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        rightWobble = hardwareMap.get(Servo.class, "rightWobbleGoalArm");
+        leftWobble = hardwareMap.get(Servo.class, "leftWobbleGoalArm");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -67,18 +72,11 @@ public class TeleOpMode extends LinearOpMode {
                 drivingLibrary.setMode(drivingMode);
             }
 
-            // press x to line up with goal
-
-
-            // intake controls
-            /*if (gamepad2.a) {
-                intakeOn = !intakeOn;
-            }*/
+            // intake control
 
             if(gamepad2.a) {
                 intakeMotor.setPower(intakePower);
-            }
-            else if(gamepad2.b) {
+            } else if(gamepad2.b) {
                 intakeMotor.setPower(-intakePower);
             }
             else {
@@ -97,7 +95,7 @@ public class TeleOpMode extends LinearOpMode {
                 launchMotor1.setPower(launchTest);
                 launchMotor2.setPower(launchTest);
             }
-            else if(gamepad2.left_bumper) {
+            else {
                 launchMotor1.setPower(0);
                 launchMotor2.setPower(0);
             }
@@ -115,16 +113,16 @@ public class TeleOpMode extends LinearOpMode {
 
             telemetry.addData("launch power", launchTest);
             telemetry.addData("robot angle", drivingLibrary.getIMUAngle());
-            telemetry.update();
 
-            /*if(gamepad1.x) {
-                if (!autonLibrary.goalReached) {
-                    speeds = autonLibrary.lineUpWithGoal();
-                    drivingLibrary.bevelDrive(speeds[0], speeds[1], speeds[2]);
-                }
-                autonLibrary.goalReached = false;
-            }*/
 
+            if (gamepad2.right_bumper) {
+                rightWobble.setPosition(1);
+                leftWobble.setPosition(-1);
+            }
+            if(gamepad2.left_bumper) {
+                rightWobble.setPosition(-1);
+                leftWobble.setPosition(1);
+            }
 
 
             telemetry.addData("Status", "Running");
