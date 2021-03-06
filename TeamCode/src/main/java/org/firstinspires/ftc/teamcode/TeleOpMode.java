@@ -88,6 +88,8 @@ public class TeleOpMode extends LinearOpMode {
                 intakeMotor.setPower(intakePower);
             } else if(gamepad2.b) {
                 intakeMotor.setPower(-intakePower);
+                launchMotorLeft.setPower(-.25f);
+                launchMotorRight.setPower(-.25f);
             }
             else {
                 intakeMotor.setPower(0);
@@ -144,5 +146,7 @@ public class TeleOpMode extends LinearOpMode {
 
         //autonLibrary.targetsUltimateGoal.deactivate();
     }
+
+    //adb connect 192.168.43.1:5555
 
 }
