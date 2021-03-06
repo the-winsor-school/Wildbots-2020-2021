@@ -15,8 +15,8 @@ public class RevServoTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        left = hardwareMap.get(Servo.class, "leftWobble");
-        right = hardwareMap.get(Servo.class, "rightWobble");
+        left = hardwareMap.get(Servo.class, "leftWobbleGoalArm");
+        right = hardwareMap.get(Servo.class, "rightWobbleGoalArm");
 
         leftPos = left.getPosition();
         rightPos = right.getPosition();

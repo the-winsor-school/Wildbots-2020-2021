@@ -11,7 +11,7 @@ import org.firstinspires.ftc.libraries.DrivingLibrary;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous
-public class ScrimmageTwoAuton extends LinearOpMode {
+public class WobbleGoalOnly extends LinearOpMode {
 
     private DrivingLibrary drivingLibrary;
     AutonLibrary autonLibrary;
@@ -21,10 +21,10 @@ public class ScrimmageTwoAuton extends LinearOpMode {
     int numRings;
 
     Rev2mDistanceSensor distTop;
-    Rev2mDistanceSensor distBot;
     Servo leftWobble;
     Servo rightWobble;
-    DcMotor launchMotor;
+    DcMotor launchMotorLeft;
+    DcMotor launchMotorRight;
     DcMotor intakeMotor;
 
     //initializing
@@ -36,10 +36,10 @@ public class ScrimmageTwoAuton extends LinearOpMode {
         telemetry.update();
 
         distTop = hardwareMap.get(Rev2mDistanceSensor.class, "distTop");
-        distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
-        leftWobble = hardwareMap.get(Servo.class, "leftWobble");
-        rightWobble = hardwareMap.get(Servo.class, "rightWobble");
-        launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
+        leftWobble = hardwareMap.get(Servo.class, "leftWobbleGoalArm");
+        rightWobble = hardwareMap.get(Servo.class, "rightWobbleGoalArm");
+        launchMotorLeft = hardwareMap.get(DcMotor.class, "launchMotor1");
+        launchMotorRight = hardwareMap.get(DcMotor.class, "launchMotor2");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 
@@ -51,9 +51,9 @@ public class ScrimmageTwoAuton extends LinearOpMode {
 
         if (opModeIsActive()) {
             numRings = autonLibrary.getStackHeight(distTop);
-            leftWobble.setPosition(-1);
-            rightWobble.setPosition(1);
-            sleep(500);
+            rightWobble.setPosition(.75);
+            leftWobble.setPosition(0);
+            sleep(1000);
             //moves left
             drivingLibrary.bevelDrive(.5f, 0, 0);
             sleep(2000);
@@ -128,39 +128,6 @@ public class ScrimmageTwoAuton extends LinearOpMode {
                 }
             }
             drivingLibrary.brakeStop();
-
-            while(distBot.getDistance(DistanceUnit.CM) > 65) {
-                drivingLibrary.bevelDrive(.5f, 0, 0);
-            }
-            drivingLibrary.brakeStop();
-
-            while(distTop.getDistance(DistanceUnit.CM) < 80) {
-                drivingLibrary.bevelDrive(0, .5f, 0);
-            }
-            drivingLibrary.brakeStop();
-
-            drivingLibrary.spinToAngle(-0.03591903);
-            launchMotor.setPower(1);
-            sleep(500);
-            intakeMotor.setPower(0.5);
-            sleep(500);
-            launchMotor.setPower(0);
-            intakeMotor.setPower(0);
-            drivingLibrary.spinToAngle(-0.09314792);
-            launchMotor.setPower(1);
-            sleep(500);
-            intakeMotor.setPower(.5);
-            sleep(500);
-            launchMotor.setPower(0);
-            intakeMotor.setPower(0);
-            drivingLibrary.spinToAngle(0.1648029);
-            launchMotor.setPower(1);
-            sleep(500);
-            launchMotor.setPower(0);
-            intakeMotor.setPower(0);
-
-            drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(3000);
         }
     }
 }

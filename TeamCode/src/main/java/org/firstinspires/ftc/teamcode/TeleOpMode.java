@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.enums.DrivingMode;
-import org.firstinspires.ftc.libraries.AutonLibrary;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -25,12 +24,12 @@ public class TeleOpMode extends LinearOpMode {
     float[] speeds;
 
     float intakePower = 0.5f;
-    float launchPower = 1f;
-    float launchTest = 0;
+    float launchPower = .8f;
+    float launchTest = .5f;
     boolean intakeOn;
 
-    DcMotor launchMotor1;
-    DcMotor launchMotor2;
+    DcMotor launchMotorLeft;
+    DcMotor launchMotorRight;
     DcMotor intakeMotor;
     Servo rightWobble;
     Servo leftWobble;
@@ -48,8 +47,8 @@ public class TeleOpMode extends LinearOpMode {
 
         //autonLibrary = new AutonLibrary(drivingLibrary, this);
 
-        launchMotor1 = hardwareMap.get(DcMotor.class, "launchMotor1");
-        launchMotor2 = hardwareMap.get(DcMotor.class, "launchMotor2");
+        launchMotorLeft = hardwareMap.get(DcMotor.class, "launchMotor1");
+        launchMotorRight = hardwareMap.get(DcMotor.class, "launchMotor2");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         rightWobble = hardwareMap.get(Servo.class, "rightWobbleGoalArm");
         leftWobble = hardwareMap.get(Servo.class, "leftWobbleGoalArm");
@@ -72,6 +71,17 @@ public class TeleOpMode extends LinearOpMode {
                 drivingLibrary.setMode(drivingMode);
             }
 
+            if (gamepad1.a) {
+                if (Math.abs(drivingLibrary.getIMUAngle() + .11) > .05) {
+                    if (drivingLibrary.getIMUAngle() > -.11) { // check which direction we need to turn
+                        drivingLibrary.bevelDrive(0, 0, .5f);
+                    } else {
+                        drivingLibrary.bevelDrive(0, 0, -.5f);
+                    }
+                }
+                drivingLibrary.brakeStop();
+            }
+
             // intake control
 
             if(gamepad2.a) {
@@ -85,19 +95,19 @@ public class TeleOpMode extends LinearOpMode {
 
             // launching controls
             if (gamepad2.x) {
-                launchMotor1.setPower(launchPower);
-                launchMotor2.setPower(launchPower);
+                launchMotorLeft.setPower(launchPower);
+                launchMotorRight.setPower(launchPower);
             }
             else if (gamepad2.y) { // this is here for testing values
                 /*launchMotor1.setPower(gamepad2.right_trigger); // might need to become negative
                 launchMotor2.setPower(gamepad2.left_trigger);*/
 
-                launchMotor1.setPower(launchTest);
-                launchMotor2.setPower(launchTest);
+                launchMotorLeft.setPower(launchTest);
+                launchMotorRight.setPower(launchTest);
             }
             else {
-                launchMotor1.setPower(0);
-                launchMotor2.setPower(0);
+                launchMotorLeft.setPower(0);
+                launchMotorRight.setPower(0);
             }
 
             if(gamepad2.dpad_up) {
@@ -116,12 +126,12 @@ public class TeleOpMode extends LinearOpMode {
 
 
             if (gamepad2.right_bumper) {
-                rightWobble.setPosition(1);
-                leftWobble.setPosition(-1);
+                rightWobble.setPosition(.75);
+                leftWobble.setPosition(0);
             }
             if(gamepad2.left_bumper) {
-                rightWobble.setPosition(-1);
-                leftWobble.setPosition(1);
+                rightWobble.setPosition(0);
+                leftWobble.setPosition(.75);
             }
 
 

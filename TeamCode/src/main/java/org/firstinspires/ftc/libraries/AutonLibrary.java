@@ -59,7 +59,7 @@ public class AutonLibrary {
         this.drivingLibrary = drivingLibrary;
         this.opMode = opMode;
 
-        webcamName = opMode.hardwareMap.tryGet(WebcamName.class, "Webcam 1");
+        /*webcamName = opMode.hardwareMap.tryGet(WebcamName.class, "Webcam 1");
 
         int cameraMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -100,42 +100,38 @@ public class AutonLibrary {
 
         this.robotFromCamera = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, Y_ROTATE, Z_ROTATE, X_ROTATE));
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, Y_ROTATE, Z_ROTATE, X_ROTATE));*/
 
         /**  Let all the trackable listeners know where the phone is.  */
-        for (VuforiaTrackable trackable : allTrackables) {
+        /*for (VuforiaTrackable trackable : allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
-        }
+        }*/
     }
 
 
-    public double[] getDistSensValues(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBottom){
+    public double getDistSensValues(Rev2mDistanceSensor DistSenTop){
     //sum (values added) and count (# of values counted) start at zero
-        double sumbot = 0;
         double sumtop = 0;
         int count = 0;
         //will only take values until its collected 10
         while (count < 50) {
             // adds one to the number of values counted
             count++;
-            sumbot += DistSenBottom.getDistance(DistanceUnit.CM);
             sumtop += DistSenTop.getDistance(DistanceUnit.CM);
         }
 
         //gets the average of the bottom sensor's values
-        opMode.telemetry.addData("Average-bottom sensor", sumbot / count);
         opMode.telemetry.addData("Average-top sensor", sumtop / count);
-        double[] distSenValues = new double[]{sumbot/count, sumtop/count};
-        return distSenValues;
+        return (sumtop / count);
     }
 
-    public int getStackHeight(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBottom) {
-        double[] distSenValues = getDistSensValues(DistSenTop, DistSenBottom);
-        if(distSenValues[1] < 200) {
+    public int getStackHeight(Rev2mDistanceSensor DistSenTop) {
+        double distSenValues = getDistSensValues(DistSenTop);
+        if(distSenValues < 200) {
             opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
             return 4;
-        } else if (distSenValues[1] < 700){
+        } else if (distSenValues < 800){
             opMode.telemetry.addData("One Ring", DistSenTop.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
             return 1;

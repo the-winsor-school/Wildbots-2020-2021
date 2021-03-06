@@ -38,7 +38,7 @@ public class AutonDrive extends LinearOpMode {
 
         if (opModeIsActive()) {
             if (!ranOnce) {
-                if (autonLibrary.getStackHeight(DistSenTop, DistSenBottom) == 0){
+                /*if (autonLibrary.getStackHeight(DistSenTop, DistSenBottom) == 0){
                     drivingLibrary.bevelDrive(0, .50f, (float)0.72);
                     sleep(2000);
                     drivingLibrary.brakeStop();
@@ -55,7 +55,7 @@ public class AutonDrive extends LinearOpMode {
                     sleep(5000);
                     drivingLibrary.brakeStop();
                     drivingLibrary.spinToAngle(Math.PI/2);
-                }
+                }*/
                 ranOnce = true;
             }
         }

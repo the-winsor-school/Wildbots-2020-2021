@@ -21,14 +21,14 @@ public class DistSens extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         distTop = hardwareMap.get(Rev2mDistanceSensor.class, "distTop");
-        distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
+        //distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
         telemetry.addData("status", "initialized");
         telemetry.update();
         autonLibrary = new AutonLibrary(drivingLibrary, this);
 //prints the distance sensed by the top and bottom sensors respectively
         waitForStart();
         while (opModeIsActive()) {
-            autonLibrary.getStackHeight(distTop, distBot);
+            autonLibrary.getStackHeight(distTop);
             /*telemetry.addData("Top Sensor Value", distTop.getDistance(DistanceUnit.CM));
             telemetry.addData("Bottom Sensor Value", distBot.getDistance(DistanceUnit.CM));
             //if the top distance sensor senses that there is a ring less than 200 centimeters, return: four rings)
