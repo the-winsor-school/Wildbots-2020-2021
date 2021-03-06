@@ -55,7 +55,7 @@ public class WobbleGoalOnly extends LinearOpMode {
             leftWobble.setPosition(0);
             sleep(1000);
             //moves left
-            drivingLibrary.bevelDrive(.5f, 0, 0);
+            drivingLibrary.bevelDriveCorrect(.5f, 0, 0);
             sleep(2000);
             drivingLibrary.brakeStop();
             //corrects angle
@@ -94,7 +94,7 @@ public class WobbleGoalOnly extends LinearOpMode {
                     drivingLibrary.bevelDrive(0, -.5f, 0);
                     sleep(1500);
                     // go right
-                    drivingLibrary.bevelDrive(-.5f, 0, 0);
+                    drivingLibrary.bevelDriveCorrect(-.5f, 0, 0);
                     sleep(2500);
                     drivingLibrary.brakeStop();
                     drivingLibrary.bevelDrive(0, .5f, 0);
@@ -114,7 +114,7 @@ public class WobbleGoalOnly extends LinearOpMode {
                     drivingLibrary.bevelDrive(0, .5f, 0);
                     sleep(3000);
                     drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(-.5f, 0, 0); // only put this in case 4 rings
+                    drivingLibrary.bevelDriveCorrect(-.5f, 0, 0); // only put this in case 4 rings
                     sleep(1000);
                     drivingLibrary.brakeStop();
                     break;

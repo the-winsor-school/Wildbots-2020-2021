@@ -159,14 +159,53 @@ public class    DrivingLibrary {
                     vt = .1;
                 }
                 else {
+                    vt = -.1;
+                }
+            }
+        }
+        else {
+            targetAngle = getIMUAngle();
+        }*/
+
+        //in order -- lF, rF, rR, lR
+        strafePowers = new double[] {
+                vd * Math.sin(theta + Math.PI/4) * strafeBias[0] - vt,
+                vd * Math.sin(theta - Math.PI/4) * strafeBias[1] + vt,
+                vd * Math.sin(theta + Math.PI/4) * strafeBias[2] + vt,
+                vd * Math.sin(theta - Math.PI/4) * strafeBias[3] - vt
+        };
+
+        strafeScale(strafePowers);
+
+        leftFront.setPower(strafePowers[0] * speedSetting);
+        rightFront.setPower(strafePowers[1] * speedSetting);
+        rightRear.setPower(strafePowers[2] * speedSetting);
+        leftRear.setPower(strafePowers[3] * speedSetting);
+
+        if (vt != 0) {
+            targetAngle = getIMUAngle();
+        }
+    }
+
+    public void bevelDriveCorrect(float x, float y, float t) {
+        double vd = strafeSpeed(x, y);
+        theta = Math.atan2(y, x);
+        double vt = t;
+
+        if (vt == 0) {
+            if (Math.abs(getIMUAngle() - targetAngle) >= .1) {
+                if (getIMUAngle() > 0) {
                     vt = .1;
+                }
+                else {
+                    vt = -.1;
                 }
             }
         }
         else {
             targetAngle = getIMUAngle();
         }
-        */
+
         //in order -- lF, rF, rR, lR
         strafePowers = new double[] {
                 vd * Math.sin(theta + Math.PI/4) * strafeBias[0] - vt,
