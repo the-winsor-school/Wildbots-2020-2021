@@ -69,21 +69,27 @@ public class WobbleGoalMidGoal extends LinearOpMode {
                 }
 
             }
-            //moves forward to park line and shoot rings
+
+            //moves forward to park line
             drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(3000);
+            sleep(4000);
             drivingLibrary.brakeStop();
-            launchMotorLeft.setPower(.8f);
-            launchMotorRight.setPower(.8f);
-            sleep(500);
-            intakeMotor.setPower(.5f);
-            sleep(3000);
-            intakeMotor.setPower(0f);
-            launchMotorRight.setPower(0f);
-            launchMotorLeft.setPower(0f);
-            drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(1000);
-            drivingLibrary.brakeStop();
+
+//            //moves forward to park line and shoot rings
+//            drivingLibrary.bevelDrive(0, -.5f, 0);
+//            sleep(3000);
+//            drivingLibrary.brakeStop();
+//            launchMotorLeft.setPower(.8f);
+//            launchMotorRight.setPower(.8f);
+//            sleep(500);
+//            intakeMotor.setPower(.5f);
+//            sleep(3000);
+//            intakeMotor.setPower(0f);
+//            launchMotorRight.setPower(0f);
+//            launchMotorLeft.setPower(0f);
+//            drivingLibrary.bevelDrive(0, -.5f, 0);
+//            sleep(1000);
+//            drivingLibrary.brakeStop();
 
 
             switch (numRings) {
