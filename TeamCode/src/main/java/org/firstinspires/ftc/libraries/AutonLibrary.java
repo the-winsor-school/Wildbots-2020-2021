@@ -131,7 +131,7 @@ public class AutonLibrary {
             opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
             return 4;
-        } else if (distSenValues < 800){
+        } else if (distSenValues < 650){
             opMode.telemetry.addData("One Ring", DistSenTop.getDistance(DistanceUnit.CM));
             opMode.telemetry.update();
             return 1;
