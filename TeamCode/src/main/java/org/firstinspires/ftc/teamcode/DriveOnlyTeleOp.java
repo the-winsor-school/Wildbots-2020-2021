@@ -1,23 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
-//imports
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.enums.DrivingMode;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 
-import java.util.Arrays;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
-
-//class name
-@TeleOp(name  = "TeleOp Mode", group = "Finished")
+@TeleOp
 public class DriveOnlyTeleOp extends LinearOpMode {
-    //drive train
     DrivingLibrary drivingLibrary;
     int drivingMode;
-    int ranOnce = 0;
-
-
+    int leftEncoder;
+    int rightEncoder;
 
     public void runOpMode() throws InterruptedException {
         //set up our driving library
@@ -29,54 +25,32 @@ public class DriveOnlyTeleOp extends LinearOpMode {
         //telemetry prints to the driver phone
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        double dist = 0;
 
         waitForStart();
 
-        while (opModeIsActive()) {
-            if (ranOnce==0) {
-                //gamepad1.b = b button on 1st controller
-                if (gamepad1.b) {
-                    drivingMode++;
-                    drivingMode %= DrivingMode.values().length;
-                    drivingLibrary.setMode(drivingMode);
-                }
-                drivingLibrary.resetEncoderValues();
-
-                //sends text to driver phone
-                telemetry.addData("Status", "Running");
-                telemetry.addData("Brake Mode", drivingLibrary.getMode());
-
-                int[] values = drivingLibrary.getEncoderValues();
-                telemetry.log().add("Start encoder values(fl, fr, rl, rr)" + Arrays.toString(values));
-                telemetry.update();
-
+        while(opModeIsActive()) {
+            //gamepad1.b = b button on 1st controller
+            if (gamepad1.b) {
+                drivingMode++;
+                drivingMode %= DrivingMode.values().length;
+                drivingLibrary.setMode(drivingMode);
+            }
+            drivingLibrary.setRecordEncoderTable();
+            dist+=drivingLibrary.getDeltaS();
+            //leftEncoder = drivingLibrary.rightFront.getCurrentPosition();
+            //rightEncoder = drivingLibrary.rightRear.getCurrentPosition();
             //sends text to driver phone
             telemetry.addData("Status", "Running");
-
-            telemetry.addData("Brake Mode", drivingLibrary.getMode());
             drivingLibrary.printEncoderValues();
-                //drivingLibrary.bevelDrive(0, -.75f, 0);
-                //sleep(1600);
-                drivingLibrary.setEncoders(1);
-                while(opModeIsActive() && drivingLibrary.motorsBusy()==true){
+            telemetry.addData("delta S", drivingLibrary.getDeltaS());
+            telemetry.addData("total dist", dist);
+            telemetry.addData("Brake Mode", drivingLibrary.getMode());
+            telemetry.update();
 
-                }
-
-                drivingLibrary.brakeStop();
-                //drivingLibrary.printEncoderValues();
-
-                values = drivingLibrary.getEncoderValues();
-                telemetry.log().add("End encoder values(fl, fr, rl, rr)" + Arrays.toString(values));
-                telemetry.update();
-                ranOnce=1;
-            }
-
-
-
-
-
-
-
+            drivingLibrary.bevelDrive(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
         }
     }
+
+
 }

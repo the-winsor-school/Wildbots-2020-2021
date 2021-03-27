@@ -71,7 +71,7 @@ public class    DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
-        
+
 
         //distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
         //distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
@@ -372,11 +372,11 @@ public class    DrivingLibrary {
         return encoderValues;
     }
 
-    //print current encoder values to driver phone
+    //print current encoder position in inches to driver phone
     public void printEncoderValues() {
-        getEncoderValues();
-        opMode.telemetry.addData("left encoder", encoderValues[0]);
-        opMode.telemetry.addData("front right encoder", encoderValues[1]);
+        double wheelCircumference = (4*3.14159); //pi times diameter
+        opMode.telemetry.addData("left encoder", leftFront.getCurrentPosition()/8192*wheelCircumference);
+        opMode.telemetry.addData("right encoder", rightFront.getCurrentPosition()/8192*wheelCircumference);
     }
     //Supposed to be able to convert ticks to inches
     public void distanceToEncoderValue(int dist){
@@ -424,14 +424,16 @@ public class    DrivingLibrary {
 
     }
     //Delta s is the change in position of the center of the robot
-    private double getDeltaS(){
+    //subtraction is weird because
+    public double getDeltaS(){
+        double wheelCircumference = (4*3.14159);
         double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
         double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
         double s =(Sr-Sl)/2;
-        return s;
+        return (s/8192)*wheelCircumference;
     }
     //delta theta is the change in angle
-    private double getDeltaTheta() {
+    public double getDeltaTheta() {
         double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
         double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
         //unit in inches
