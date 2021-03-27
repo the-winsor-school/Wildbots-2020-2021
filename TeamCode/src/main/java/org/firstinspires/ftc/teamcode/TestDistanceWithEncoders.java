@@ -26,8 +26,10 @@ public class TestDistanceWithEncoders extends LinearOpMode {
         telemetry.update();
 
         drivingLibrary.resetEncoderValues();
-        drivingLibrary.setEncoders(12);
         drivingLibrary.setRunMode(true);
+
+        drivingLibrary.setEncoders(12);
+
 
         int[] values = drivingLibrary.getEncoderValues();
         drivingLibrary.setRecordEncoderTable();
@@ -39,7 +41,7 @@ public class TestDistanceWithEncoders extends LinearOpMode {
 
         waitForStart();
         while(opModeIsActive() && drivingLibrary.motorsBusy()){
-            drivingLibrary.bevelDrive(0, -.75f, 0);
+            drivingLibrary.bevelDrive(0, .75f, 0);
 
             values=drivingLibrary.getEncoderValues();
             //get the deltas which you get in the library
