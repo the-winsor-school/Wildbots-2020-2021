@@ -30,8 +30,10 @@ public class DrivingLibrary {
     public DcMotor rightFront;
     public DcMotor leftRear;
     public DcMotor rightRear;
-    public DcMotor rightEncoder;
-    public DcMotor leftEncoder;
+    //public DcMotor rightEncoder;
+    //public DcMotor leftEncoder;
+    public DcMotor launchMotor;
+    public DcMotor intakeMotor;
     private DcMotor[] allMotors;
     private HardwareMap hardwareMap;
     private double[] strafeBias;
@@ -50,6 +52,8 @@ public class DrivingLibrary {
     private double theta;
     private double strafeError;
     private double targetAngle;
+    public double xPos;
+    public double yPos;
     private Hashtable<Encoders, Integer> encoderTable;
     private Hashtable<Encoders, Integer> recordEncoderTable;
 
@@ -61,6 +65,8 @@ public class DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
+        launchMotor =hardwareMap.tryGet(DcMotor.class, "launchMotor");
+        intakeMotor = hardwareMap.tryGet(DcMotor.class, "intakeMotor");
 
         encoderTable = new Hashtable<Encoders, Integer>();
         recordEncoderTable=new Hashtable<Encoders,Integer>();
@@ -312,8 +318,8 @@ public class DrivingLibrary {
     //get current encoder values
     public int[] getEncoderValues() {
 
-        encoderValues[0] = leftEncoder.getCurrentPosition();
-        encoderValues[1] = rightEncoder.getCurrentPosition();
+        encoderValues[0] = leftFront.getCurrentPosition();
+        encoderValues[1] = rightFront.getCurrentPosition();
 
         return encoderValues;
     }
@@ -324,24 +330,26 @@ public class DrivingLibrary {
         opMode.telemetry.addData("left encoder", encoderValues[0]);
         opMode.telemetry.addData("front right encoder", encoderValues[1]);
     }
-
+    //Supposed to be able to convert ticks to inches
     public void distanceToEncoderValue(int dist){
-        //figure out circumference and ticks per revolution because these are old values
+        //are these values accurate? unsure, but they're in inches
         int[] e = getEncoderValues();
-        int wheelCircumference = 1; //FIND (;__;) "BLACK OMNIWHEELS" IS NOT A SPECIFIC ENOUGH GOOGLE FOR ME TO FIND THE BRAND >:(
-        encoderTable.put(Encoders.LF, (int)(dist+e[0]/2048*wheelCircumference));
-        encoderTable.put(Encoders.RF, (int)(dist+e[1]/2048*wheelCircumference));
+        double wheelCircumference = (4*3.14159); //pi times diameter
+        encoderTable.put(Encoders.LF, (int)(dist+e[0]/8192*wheelCircumference));
+        encoderTable.put(Encoders.RF, (int)(dist+e[1]/8192*wheelCircumference));
     }
     public int getLeftFrontEncoderValueSpecifically(){
         // i think this does not need to exist anymore but i'm not confident enough in that assertion to delete this
         return encoderTable.get(Encoders.LF);
     }
+    //Set what position they should drive to
     public void setEncoders(int dist){
         distanceToEncoderValue(dist);
-        leftEncoder.setTargetPosition(encoderTable.get(Encoders.LF));
-        rightEncoder.setTargetPosition(encoderTable.get(Encoders.RF));
+        leftFront.setTargetPosition(encoderTable.get(Encoders.LF));
+        rightFront.setTargetPosition(encoderTable.get(Encoders.RF));
 
         }
+        //another potentially obsolete function
     public boolean motorsBusy() {
         if(leftFront.isBusy() || rightRear.isBusy() || leftRear.isBusy()) {
             return true;
@@ -360,36 +368,48 @@ public class DrivingLibrary {
             }
         }
     }
+    //record the current encoder position, to be used when comparing whether or not the wheel is at
+    //the right position
     public void setRecordEncoderTable(){
         recordEncoderTable.put(Encoders.LF, leftFront.getCurrentPosition());
         recordEncoderTable.put(Encoders.RF, rightFront.getCurrentPosition());
 
     }
+    //Delta s is the change in position of the center of the robot
     private double getDeltaS(){
         double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
         double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
         double s =(Sr-Sl)/2;
         return s;
     }
+    //delta theta is the change in angle
     private double getDeltaTheta() {
         double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
         double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
-        double theta=(Sr-Sl)/13.25;
+        //unit in inches
+        double theta=(Sr-Sl)/(18.5*2);
         return theta;
     }
+    //when converting to (x,y) coordinates, need to get delta x from delta s
     public double getDeltaX(){
-        //its delta theta divided by two because that's how the math
+        //half delta theta is delta theta divided by two because that's how the math works
         //and I didn't want to make another variable :/
         double halfDeltaTheta = getDeltaTheta()/2;
         double deltaS = getDeltaS();
         double deltaX=deltaS*Math.cos(getIMUAngle()+halfDeltaTheta);
         return deltaX;
     }
+    //same as delta y
     public double getDeltaY(){
         double halfDeltaTheta = getDeltaTheta()/2;
         double deltaS = getDeltaS();
         double deltaY=deltaS*Math.sin(getIMUAngle()+halfDeltaTheta);
         return deltaY;
+    }
+    public void resetXY(){
+        //set to where the robot is set down, probably won't be in the bottom left corner
+        xPos=0;
+        yPos=0;
     }
 
 
