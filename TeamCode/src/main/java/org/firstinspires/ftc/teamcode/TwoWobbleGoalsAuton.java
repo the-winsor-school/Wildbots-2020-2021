@@ -66,7 +66,7 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
             sleep(2000);
             drivingLibrary.brakeStop();
             //corrects angle
-            while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
+            while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .1) {
                 if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn
                     drivingLibrary.bevelDrive(0, 0, .1f);
                 } else {
@@ -85,35 +85,26 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
             switch (numRings) {
                 case 0:
                     //move backwards
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(1000);
+                    drivingLibrary.bevelDrive(0, .7f, 0);
+                    sleep(1000 * 5/7);
                     drivingLibrary.brakeStop();
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
-                    //both wobbles up
-                    while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI) > .1) {
-                        if (drivingLibrary.getIMUAngle() > Math.PI) { // check which direction we need to turn
-                            drivingLibrary.bevelDrive(0, 0, .5f);
-                        } else {
-                            drivingLibrary.bevelDrive(0, 0, -.5f);
-                        }
-                    }
                     drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(3500);
+                    drivingLibrary.bevelDrive(0, .7f, 0);
+                    sleep(3800 * 5/7);
                     drivingLibrary.brakeStop();
-                    while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI) > .1) {
-                        if (drivingLibrary.getIMUAngle() > Math.PI) { // check which direction we need to turn
-                            drivingLibrary.bevelDrive(0, 0, .5f);
-                        } else {
-                            drivingLibrary.bevelDrive(0, 0, -.5f);
-                        }
-                    }
+                    drivingLibrary.bevelDrive(-.7f, 0, 0);
+                    sleep(3000 * 5/7);
+                    drivingLibrary.brakeStop();
+                    leftWobble.setPosition(-.5);
+                    rightWobble.setPosition(0.92);
+                    sleep(500);
                     drivingLibrary.brakeStop();
                     drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(1000);
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(2000);
+                    sleep(3000);
+                    drivingLibrary.bevelDrive(0, -.5f, 0);
+                    sleep(4000);
                     drivingLibrary.brakeStop();
                     //corrects angle
                     while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
@@ -126,19 +117,9 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                         }
 
                     }
-                    //moves forward to park line
-                    drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(4000);
                     drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(1000);
-                    drivingLibrary.brakeStop();
-                    leftWobble.setPosition(1);
-                    rightWobble.setPosition(-1);
-                    drivingLibrary.bevelDrive(-.5f, 0, 0);
-                    sleep(1500);
-                    drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(1500);
+                    leftWobble.setPosition(1.0);
+                    rightWobble.setPosition(-1.0);
                     drivingLibrary.brakeStop();
                     break;
                 case 1:
@@ -149,67 +130,26 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     drivingLibrary.bevelDrive(-.5f, 0, 0);
                     sleep(2500);
                     drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(1300);
-                    drivingLibrary.brakeStop();
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
-                    while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI) > .1) {
-                        if (drivingLibrary.getIMUAngle() > Math.PI) { // check which direction we need to turn
-                            drivingLibrary.bevelDrive(0, 0, .5f);
-                        } else {
-                            drivingLibrary.bevelDrive(0, 0, -.5f);
-                        }
-                    }
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(3500);
-                    drivingLibrary.brakeStop();
-                    while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI) > .1) {
-                        if (drivingLibrary.getIMUAngle() > Math.PI) { // check which direction we need to turn
-                            drivingLibrary.bevelDrive(0, 0, .5f);
-                        } else {
-                            drivingLibrary.bevelDrive(0, 0, -.5f);
-                        }
-                    }
-                    drivingLibrary.brakeStop();
+                    //drops off wobble goal at square B
+                    sleep(500);
+                    drivingLibrary.bevelDrive(-.7f, 0, 0);
+                    sleep(2000 * 5/7);
+                    drivingLibrary.bevelDrive(0,.7f, 0);
+                    sleep(6000 * 5/7);
+                    drivingLibrary.bevelDrive(.7f, 0, 0);
+                    sleep(1000 * 5/7);
+                    leftWobble.setPosition(-.5);
+                    rightWobble.setPosition(0.92);
+                    //picks up second wobble goal
+                    sleep(500);
                     drivingLibrary.bevelDrive(.5f, 0, 0);
                     sleep(1000);
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(2000);
-                    drivingLibrary.brakeStop();
-                    //corrects angle
-                    while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
-                        if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn
-                            drivingLibrary.bevelDrive(0, 0, .1f);
-                        } else {
-                            drivingLibrary.bevelDrive(0, 0, -.1f);
-
-                            ranOnce = true;
-                        }
-
-                    }
-                    //moves forward to park line
                     drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(4000);
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(1000);
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(-.5f, 0, 0);
-                    sleep(1500);
-                    drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(1500);
-                    drivingLibrary.brakeStop();
-                    //go forwards
-                    drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(1500);
-                    // go right
-                    drivingLibrary.bevelDrive(-.5f, 0, 0);
-                    sleep(2500);
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(1300);
+                    sleep(5500);
+                    drivingLibrary.bevelDrive(0,.7f, 0);
+                    sleep(1500 * 5/7);
                     drivingLibrary.brakeStop();
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
@@ -222,35 +162,18 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     rightWobble.setPosition(-1);
                     drivingLibrary.brakeStop();
                     //move backwards
-                    drivingLibrary.bevelDrive(0, .5f, 0);
+                    drivingLibrary.bevelDrive(0, .8f, 0);
+                    sleep(7500 * 5/8);
+                    drivingLibrary.brakeStop();
+                    drivingLibrary.bevelDrive(-.8f, 0f, 0);
+                    sleep(2800 * 5/8);
+                    drivingLibrary.brakeStop();
+                    leftWobble.setPosition(-0.5);
+                    rightWobble.setPosition(0.92);
+                    sleep(500);
+                    drivingLibrary.brakeStop();
+                    drivingLibrary.bevelDrive(.5f, 0, 0);
                     sleep(3000);
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(-.5f, 0, 0); // only put this in case 4 rings
-                    sleep(1000);
-                    drivingLibrary.brakeStop();
-                    while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI) > .1) {
-                        if (drivingLibrary.getIMUAngle() > Math.PI) { // check which direction we need to turn
-                            drivingLibrary.bevelDrive(0, 0, .5f);
-                        } else {
-                            drivingLibrary.bevelDrive(0, 0, -.5f);
-                        }
-                    }
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(3500);
-                    drivingLibrary.brakeStop();
-                    while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI) > .1) {
-                        if (drivingLibrary.getIMUAngle() > Math.PI) { // check which direction we need to turn
-                            drivingLibrary.bevelDrive(0, 0, .5f);
-                        } else {
-                            drivingLibrary.bevelDrive(0, 0, -.5f);
-                        }
-                    }
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(1000);
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(2000);
                     drivingLibrary.brakeStop();
                     //corrects angle
                     while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
@@ -270,11 +193,8 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     rightWobble.setPosition(-1);
                     drivingLibrary.brakeStop();
                     //move backwards
-                    drivingLibrary.bevelDrive(0, .5f, 0);
-                    sleep(3000);
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(-.5f, 0, 0); // only put this in case 4 rings
-                    sleep(1000);
+                    drivingLibrary.bevelDrive(0, .8f, 0);
+                    sleep(2500);
                     drivingLibrary.brakeStop();
                     break;
             }
