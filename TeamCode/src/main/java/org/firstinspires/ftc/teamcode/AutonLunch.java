@@ -46,6 +46,7 @@ public class AutonLunch extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            drivingLibrary.spinToAngle(Math.PI);
             // runs until 3 rings have been launched
             while (ringsLunched < 3) {
                 // turns on launcher motors
@@ -69,7 +70,12 @@ public class AutonLunch extends LinearOpMode {
                 }
             }
             // moves the intake helper to position
-            intakeHelp.setPosition(-0.5f);
+            drivingLibrary.resetEncoderValues();
+            while (drivingLibrary.getDistTravelled() > -4) {
+                drivingLibrary.bevelDrive(0, 5f, 0);
+            }
+            drivingLibrary.brakeStop();
+            // intakeHelp.setPosition(-0.5f);
         }
     }
 }
