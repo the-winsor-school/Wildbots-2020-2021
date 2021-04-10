@@ -33,12 +33,16 @@ public class    DrivingLibrary {
     public DcMotor rightRear;
 
 
+
     //public Rev2mDistanceSensor distSenTop;
     //public Rev2mDistanceSensor distSenBottom;
 
 
-    public DcMotor rightEncoder;
-    public DcMotor leftEncoder;
+
+    //public DcMotor rightEncoder;
+    //public DcMotor leftEncoder;
+    public DcMotor launchMotor;
+    public DcMotor intakeMotor;
 
     private DcMotor[] allMotors;
     private HardwareMap hardwareMap;
@@ -71,6 +75,8 @@ public class    DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
+        launchMotor =hardwareMap.tryGet(DcMotor.class, "launchMotor");
+        intakeMotor = hardwareMap.tryGet(DcMotor.class, "intakeMotor");
 
 
         //distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
@@ -374,9 +380,10 @@ public class    DrivingLibrary {
 
     //print current encoder position in inches to driver phone
     public void printEncoderValues() {
-        double wheelCircumference = (4*3.14159); //pi times diameter
-        opMode.telemetry.addData("left encoder", leftFront.getCurrentPosition()/8192*wheelCircumference);
-        opMode.telemetry.addData("right encoder", rightFront.getCurrentPosition()/8192*wheelCircumference);
+        getEncoderValues();
+        opMode.telemetry.addData("left encoder", encoderValues[0]);
+        opMode.telemetry.addData("front right encoder", encoderValues[1]);
+
     }
     //Supposed to be able to convert ticks to inches
     public void distanceToEncoderValue(int dist){
@@ -385,11 +392,13 @@ public class    DrivingLibrary {
         double wheelCircumference = (4*3.14159); //pi times diameter
         encoderTable.put(Encoders.LF, (int)(dist+e[0]/8192*wheelCircumference));
         encoderTable.put(Encoders.RF, (int)(dist+e[1]/8192*wheelCircumference));
+
     }
     public int getLeftFrontEncoderValueSpecifically(){
         // i think this does not need to exist anymore but i'm not confident enough in that assertion to delete this
         return encoderTable.get(Encoders.LF);
     }
+
     //Set what position they should drive to
     public void setEncoders(int dist){
         distanceToEncoderValue(dist);
@@ -424,12 +433,13 @@ public class    DrivingLibrary {
 
     }
     //Delta s is the change in position of the center of the robot
+
     //subtraction is weird because
     public double getDeltaS(){
         double wheelCircumference = (4*3.14159);
         double Sr=rightFront.getCurrentPosition()-recordEncoderTable.get(Encoders.RF);
         double Sl=leftFront.getCurrentPosition()-recordEncoderTable.get(Encoders.LF);
-        double s =(Sr-Sl)/2;
+        double s =(Sr+Sl)/2;
         return (s/8192)*wheelCircumference;
     }
     //delta theta is the change in angle

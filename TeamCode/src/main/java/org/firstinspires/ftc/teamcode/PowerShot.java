@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.libraries.DrivingLibrary;
@@ -11,7 +12,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 //Names the Auton -> "name =" appears on the phone
 
+
 @Disabled
+
 
 @Autonomous(name = "JustThePowerShot")
 public class PowerShot extends LinearOpMode {
@@ -37,6 +40,7 @@ public class PowerShot extends LinearOpMode {
         launch line */
         waitForStart();
 
+
        /* while (opModeIsActive()) {
             // all of this is just calling methods (see that we have not fully fleshed out takeShot)
             //moveToDistance(TARGET_1_DISTANCE);
@@ -49,6 +53,19 @@ public class PowerShot extends LinearOpMode {
             break;
         } */
 
+
+        while (opModeIsActive()) {
+            // all of this is just calling methods (see that we have not fully fleshed out takeShot)
+            moveToDistance(TARGET_1_DISTANCE);
+            takeShot();
+            moveToDistance(TARGET_2_DISTANCE);
+            takeShot();
+            moveToDistance(TARGET_3_DISTANCE);
+            takeShot();
+
+            break;
+        }
+
     }
 
     // when we know how, put in the code for launching
@@ -58,6 +75,7 @@ public class PowerShot extends LinearOpMode {
     }
 
     // robot moves until it reaches one of the constant distance away from the right wall
+
 
     /*private void moveToDistance(double targetDistance) {
         double distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
@@ -74,5 +92,16 @@ public class PowerShot extends LinearOpMode {
           //  distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
         //}
   // }
+
+
+    private void moveToDistance(double targetDistance) {
+        //double distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH); <-commented out because no distance sensor
+        // when the actual distance is greater than target dist, robot keeps moving
+        //while (distance >= targetDistance) {
+            //sets the direction robot will move in (Is 1 too fast?)
+            drivingLibrary.bevelDrive(1, 0, 0);
+            //distance = drivingLibrary.distSenBottom.getDistance(DistanceUnit.INCH);
+        //}
+    }
 
 }
