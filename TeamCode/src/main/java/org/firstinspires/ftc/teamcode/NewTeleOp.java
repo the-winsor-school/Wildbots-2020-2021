@@ -28,7 +28,6 @@ public class NewTeleOp extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         drivingLibrary = new DrivingLibrary(this);
-        drivingLibrary.setSpeed(1);
         drivingMode = 0;
         drivingLibrary.setMode(drivingMode);
 
@@ -58,9 +57,12 @@ public class NewTeleOp extends LinearOpMode {
 
                 if (intakeOn && launchMotorLeft.getVelocity() <= -(launchVel - 40) && launchMotorRight.getVelocity() >= (launchVel - 40)) {
                     intakeMotor.setPower(-intakePower);
+                    // (continuous) push x once to make launch automatically
+                    // happen (when the motors are going fast enough)
                     if (gamepad2.x) {
                         intakeOn = false;
                     }
+                    //turns intake on
                 } else if (gamepad2.a && launchMotorLeft.getVelocity() <= -(launchVel - 40) && launchMotorRight.getVelocity() >= (launchVel - 40)) {
                     intakeMotor.setPower(-intakePower);
                 } else if (gamepad2.b) {
