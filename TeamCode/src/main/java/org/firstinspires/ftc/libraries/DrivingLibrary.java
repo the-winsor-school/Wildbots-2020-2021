@@ -7,7 +7,6 @@ package org.firstinspires.ftc.libraries;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -20,10 +19,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import java.util.Hashtable;
-
-
 import java.util.Arrays;
+import java.util.Hashtable;
 
 public class    DrivingLibrary {
     // hardware variables
@@ -63,8 +60,10 @@ public class    DrivingLibrary {
         rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftRear");
         rightRear = hardwareMap.tryGet(DcMotor.class, "rightRear");
+
         //distSenTop = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenTop");
         //distSenBottom = hardwareMap.get(Rev2mDistanceSensor.class, "DistSenBottom");
+
 
         encoderTable = new Hashtable<Encoders, Integer>();
         recordEncoderTable=new Hashtable<Encoders,Integer>();
@@ -159,14 +158,51 @@ public class    DrivingLibrary {
                     vt = .1;
                 }
                 else {
-                    vt = .1;
+                    vt = -.1;
                 }
             }
         }
         else {
             targetAngle = getIMUAngle();
+        }*/
+
+        //in order -- lF, rF, rR, lR
+        strafePowers = new double[]{
+                vd * Math.sin(theta + Math.PI / 4) * strafeBias[0] - vt,
+                vd * Math.sin(theta - Math.PI / 4) * strafeBias[1] + vt,
+                vd * Math.sin(theta + Math.PI / 4) * strafeBias[2] + vt,
+                vd * Math.sin(theta - Math.PI / 4) * strafeBias[3] - vt
+        };
+
+        strafeScale(strafePowers);
+
+        leftFront.setPower(strafePowers[0] * speedSetting);
+        rightFront.setPower(strafePowers[1] * speedSetting);
+        rightRear.setPower(strafePowers[2] * speedSetting);
+        leftRear.setPower(strafePowers[3] * speedSetting);
+
+        if (vt != 0) {
+            targetAngle = getIMUAngle();
         }
-        */
+    }
+
+    public void bevelDriveCorrect(float x, float y, float t) {
+        double vd = strafeSpeed(x, y);
+        theta = Math.atan2(y, x);
+        double vt = t;
+
+        if (vt == 0) {
+            if (Math.abs(getIMUAngle() - targetAngle) >= .1) {
+                if (getIMUAngle() > targetAngle) {
+                    vt = .1;
+                } else {
+                    vt = -.1;
+                }
+            }
+        } else {
+            targetAngle = getIMUAngle();
+        }
+
         //in order -- lF, rF, rR, lR
         strafePowers = new double[] {
                 vd * Math.sin(theta + Math.PI/4) * strafeBias[0] - vt,
@@ -344,10 +380,7 @@ public class    DrivingLibrary {
         rightRear.setTargetPosition(encoderTable.get(Encoders.RR));
         }
     public boolean motorsBusy() {
-        if(leftFront.isBusy() || rightRear.isBusy() || leftRear.isBusy()) {
-            return true;
-        }
-        return false;
+        return leftFront.isBusy() || rightRear.isBusy() || leftRear.isBusy();
     }
     public void setRunMode(boolean encoderMode){
         if (encoderMode == true){
@@ -383,14 +416,38 @@ public class    DrivingLibrary {
         //and I didn't want to make another variable :/
         double halfDeltaTheta = getDeltaTheta()/2;
         double deltaS = getDeltaS();
-        double deltaX=deltaS*Math.cos(getIMUAngle()+halfDeltaTheta);
+        double deltaX = deltaS * Math.cos(getIMUAngle() + halfDeltaTheta);
         return deltaX;
     }
-    public double getDeltaY(){
-        double halfDeltaTheta = getDeltaTheta()/2;
+
+    public double getDeltaY() {
+        double halfDeltaTheta = getDeltaTheta() / 2;
         double deltaS = getDeltaS();
-        double deltaY=deltaS*Math.sin(getIMUAngle()+halfDeltaTheta);
+        double deltaY = deltaS * Math.sin(getIMUAngle() + halfDeltaTheta);
         return deltaY;
     }
+
+    public void driveForward(double inches) {
+        resetEncoderValues();
+
+        double leftVal = getEncoderValues()[0];
+        double rightVal = getEncoderValues()[1];
+
+        double avgDist = 8192 * 90 * 25.4 * (leftVal + rightVal) / 2;
+
+        while (avgDist < inches) {
+            bevelDrive(0, -.5f, 0);
+            leftVal = getEncoderValues()[0];
+            rightVal = getEncoderValues()[1];
+            avgDist = 8192 * (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2;
+            opMode.telemetry.addData("Left Encoder Value", leftVal);
+            opMode.telemetry.addData("Right Encoder Value", rightVal);
+            opMode.telemetry.addData("Distance Travelled", avgDist);
+            opMode.telemetry.update();
+        }
+
+        brakeStop();
+    }
+
 
 }

@@ -39,15 +39,19 @@ public class TestDistanceWithEncoders extends LinearOpMode {
         while(opModeIsActive() && drivingLibrary.motorsBusy()){
             drivingLibrary.bevelDrive(0, -.75f, 0);
 
-            values=drivingLibrary.getEncoderValues();
 
-            deltaX= drivingLibrary.getDeltaX();
-            xPos+=deltaX;
-            deltaY=drivingLibrary.getDeltaY();
-            yPos+=deltaY;
-            values=drivingLibrary.getEncoderValues();
+            values = drivingLibrary.getEncoderValues();
+
+            deltaX = drivingLibrary.getDeltaX();
+            xPos += deltaX;
+            deltaY = drivingLibrary.getDeltaY();
+            yPos += deltaY;
+            values = drivingLibrary.getEncoderValues();
             telemetry.addData("xpos:", xPos);
             telemetry.addData("yPos", yPos);
+
+            values = drivingLibrary.getEncoderValues();
+
             telemetry.addData("encoder values:", Arrays.toString(values));
             telemetry.update();
         }
