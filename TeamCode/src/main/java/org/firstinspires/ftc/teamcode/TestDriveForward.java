@@ -11,6 +11,7 @@ public class TestDriveForward extends LinearOpMode {
 
     boolean ranOnce = false;
 
+    double targetDist = 12;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -26,15 +27,19 @@ public class TestDriveForward extends LinearOpMode {
         while (opModeIsActive() && !ranOnce) {
             drivingLibrary.resetEncoderValues();
 
-            double leftVal = drivingLibrary.getEncoderValues()[0];
-            double rightVal = drivingLibrary.getEncoderValues()[1];
+            while(drivingLibrary.getDistTravelled() < targetDist) {
+                drivingLibrary.bevelDrive(0, -.5f, 0);
+            }
 
-            double avgDist = (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2 / 8192;
+            //double leftVal = drivingLibrary.getEncoderValues()[0];
+            //double rightVal = drivingLibrary.getEncoderValues()[1];
 
-            telemetry.addData("distance", avgDist);
-            telemetry.update();
+            //double avgDist = (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2 / 8192;
 
-            while (avgDist < 12) {
+            //telemetry.addData("distance", avgDist);
+            //telemetry.update();
+
+            /*while (avgDist < 12) {
                 drivingLibrary.bevelDrive(0, -.5f, 0);
                 leftVal = drivingLibrary.getEncoderValues()[0];
                 rightVal = drivingLibrary.getEncoderValues()[1];
@@ -43,7 +48,8 @@ public class TestDriveForward extends LinearOpMode {
                 telemetry.addData("Right Encoder Value", rightVal);
                 //telemetry.addData("Distance Travelled", avgDist);
                 telemetry.update();
-            }
+            }*/
+
 
             drivingLibrary.brakeStop();
             ranOnce = true;
