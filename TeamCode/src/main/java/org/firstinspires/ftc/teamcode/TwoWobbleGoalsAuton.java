@@ -50,10 +50,17 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            telemetry.addData("rightWobblePosition", rightWobble.getPosition());
+            telemetry.addData("leftWobblePosition", leftWobble.getPosition());
+            telemetry.update();
             numRings = autonLibrary.getStackHeight(distTop);
-            leftWobble.setPosition(0.15);
-            rightWobble.setPosition(0.85);
+            leftWobble.setPosition(0.2);
+            rightWobble.setPosition(1.0);
+            //both down
             sleep(1000);
+            telemetry.addData("rightWobblePosition", rightWobble.getPosition());
+            telemetry.addData("leftWobblePosition", leftWobble.getPosition());
+            telemetry.update();
             //moves left
             drivingLibrary.bevelDrive(.5f, 0, 0);
             sleep(2000);
@@ -73,7 +80,7 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
             drivingLibrary.bevelDrive(0, -.5f, 0);
             sleep(4000);
             drivingLibrary.brakeStop();
-
+            //parked
 
             switch (numRings) {
                 case 0:
@@ -83,16 +90,7 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     drivingLibrary.brakeStop();
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
-                    drivingLibrary.bevelDrive(-.5f, 0, 0);
-                    sleep(1500);
-                    drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(1500);
-                    drivingLibrary.brakeStop();
-                    drivingLibrary.bevelDrive(-.5f, 0, 0);
-                    sleep(1000);
-                    drivingLibrary.brakeStop();
-                    leftWobble.setPosition(-1);
-                    rightWobble.setPosition(1);
+                    //both wobbles up
                     while (Math.abs(drivingLibrary.getIMUAngle() - Math.PI) > .1) {
                         if (drivingLibrary.getIMUAngle() > Math.PI) { // check which direction we need to turn
                             drivingLibrary.bevelDrive(0, 0, .5f);
