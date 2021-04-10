@@ -36,13 +36,15 @@ public class DriveOnlyForReal extends LinearOpMode {
                 drivingLibrary.setMode(drivingMode);
             }
 
-            leftEncoder = drivingLibrary.rightFront.getCurrentPosition();
-            rightEncoder = drivingLibrary.rightRear.getCurrentPosition();
+            telemetry.addData("Left Encoder Value", drivingLibrary.getEncoderValues()[0]);
+            telemetry.addData("Right Encoder Value", drivingLibrary.getEncoderValues()[1]);
+
+
             //sends text to driver phone
-            telemetry.addData("Status", "Running");
-            telemetry.addData("Left", leftEncoder);
-            telemetry.addData("Right", rightEncoder);
-            telemetry.addData("Brake Mode", drivingLibrary.getMode());
+            //telemetry.addData("Status", "Running");
+            //telemetry.addData("Left", leftEncoder);
+            //telemetry.addData("Right", rightEncoder);
+            //telemetry.addData("Brake Mode", drivingLibrary.getMode());
             telemetry.update();
 
             drivingLibrary.bevelDrive(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);

@@ -194,7 +194,7 @@ public class    DrivingLibrary {
 
         if (vt == 0) {
             if (Math.abs(getIMUAngle() - targetAngle) >= .1) {
-                if (getIMUAngle() > 0) {
+                if (getIMUAngle() > targetAngle) {
                     vt = .1;
                 }
                 else {
@@ -399,6 +399,28 @@ public class    DrivingLibrary {
                 motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
         }
+    }
+
+    public void driveForward(double inches) {
+        resetEncoderValues();
+
+        double leftVal = getEncoderValues()[0];
+        double rightVal = getEncoderValues()[1];
+
+        double avgDist = 8192 * 90 * 25.4 * (leftVal + rightVal) / 2;
+
+        while(avgDist < inches) {
+            bevelDrive(0, -.5f, 0);
+            leftVal = getEncoderValues()[0];
+            rightVal = getEncoderValues()[1];
+            avgDist = 8192 * (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2;
+            opMode.telemetry.addData("Left Encoder Value", leftVal);
+            opMode.telemetry.addData("Right Encoder Value", rightVal);
+            opMode.telemetry.addData("Distance Travelled", avgDist);
+            opMode.telemetry.update();
+        }
+
+        brakeStop();
     }
 
 

@@ -83,7 +83,6 @@ public class TeleOpMode extends LinearOpMode {
             }
 
             // intake control
-
             if(gamepad2.a) {
                 intakeMotor.setPower(intakePower);
             } else if(gamepad2.b) {
