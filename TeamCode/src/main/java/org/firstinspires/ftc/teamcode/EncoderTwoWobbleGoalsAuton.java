@@ -19,6 +19,7 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
     private static final float crashIntoWall = .50f; //figure out actual time but this is the time it takes to get to the left wall
     private static final long parkLine = 1000; //Time to get to line
     int numRings;
+    //how long a square is :T
     int square = 24;
     int halfSquare=12;
 
@@ -31,7 +32,7 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
 
     //initializing
     //@Override
-
+    //drives forwards using encoders. Note: do not need to make motorPower negative, targetDist is in inches
     public void driveForwards(double targetDist, float motorPower){
         drivingLibrary.resetEncoderValues();
         while(drivingLibrary.getDistTravelled() < targetDist) {
@@ -39,6 +40,7 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
         }
         drivingLibrary.brakeStop();
     }
+    //drives backwards using encoders
     public void driveBackwards(double targetDist, float motorPower){
         drivingLibrary.resetEncoderValues();
         while(drivingLibrary.getDistTravelled() > -targetDist) {
@@ -46,7 +48,16 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
         }
         drivingLibrary.brakeStop();
     }
-
+    //sets both servos to their respective up position
+    public void servosUp(){
+        leftWobble.setPosition(1);
+        rightWobble.setPosition(0);
+    }
+    //sets both servos to their respective down position
+    public void servosDown(){
+        leftWobble.setPosition(0);
+        rightWobble.setPosition(1.0);
+    }
 
     public void runOpMode() throws InterruptedException {
         drivingLibrary = new DrivingLibrary(this);
@@ -74,9 +85,9 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
             telemetry.addData("leftWobblePosition", leftWobble.getPosition());
             telemetry.update();
             //numRings = autonLibrary.getStackHeight(distTop);\
-            numRings=0;
-            //leftWobble.setPosition(0.2);
-            //rightWobble.setPosition(1.0);
+            numRings=4;
+            sleep(500);
+            servosDown();
             //both down
             sleep(1000);
             telemetry.addData("rightWobblePosition", rightWobble.getPosition());
@@ -95,55 +106,51 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
 
                     ranOnce = true;
                 }
-
             }
-            //moves forward to park line
-            /*
-            drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(4000);
-            drivingLibrary.brakeStop();
-            */
-            driveForwards(2*square+halfSquare, 0.5f);
-            //parked
+
+
 
             switch (numRings) {
                 case 0:
+                    //moves forward to park line
+                    driveForwards(2*square+halfSquare, 0.5f);
+                    //parked
                     //move backwards
                     driveBackwards(halfSquare, 0.7f);
 
-                    //leftWobble.setPosition(1);
-                    //rightWobble.setPosition(-1);
+                    servosUp();
                     //releases wobble goal
 
-                    driveBackwards(2*square,0.7f);
+                    driveBackwards(1.9*square,0.7f);
                     //moves backward
 
+                    //goes right(?) for [number] squares
                     drivingLibrary.bevelDrive(-.7f, 0, 0);
                     sleep(3000 * 5/7);
                     //moves to pick up wobble goal
                     drivingLibrary.brakeStop();
 
-                    //leftWobble.setPosition(-.5);
-                    //rightWobble.setPosition(0.92);
+                    driveForwards(4, 0.5f);
+                    servosDown();
                     sleep(500);
                     drivingLibrary.brakeStop();
 
+                    //goes left(?) for [number] of squares
                     drivingLibrary.bevelDrive(.5f, 0, 0);
                     sleep(3000);
 
                     //crashes against wall
-                    driveForwards(2.25*square, 0.5f);
+                    driveForwards(2.5*square, 0.5f);
 
                     //drops off wobble goal
                     driveBackwards(halfSquare, 0.75f);
 
-                    drivingLibrary.bevelDrive(.5f, 0, 0);
-                    sleep(2500);
+                    drivingLibrary.bevelDrive(-.5f, 0, 0);
+                    sleep(2000);
                     driveForwards(halfSquare, 0.75f);
 
 
-                    //leftWobble.setPosition(1.0);
-                    //rightWobble.setPosition(-1.0);
+                    servosUp();
                     drivingLibrary.brakeStop();
                     break;
 
@@ -155,21 +162,24 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
                     drivingLibrary.bevelDrive(-.5f, 0, 0);
                     sleep(2500);
                     drivingLibrary.brakeStop();
-                    //leftWobble.setPosition(1);
-                    //rightWobble.setPosition(-1);
+                    servosUp();
                     //drops off wobble goal at square B
                     sleep(500);
-                    //moves to the right
-                    drivingLibrary.bevelDrive(-.7f, 0, 0);
-                    sleep(2000 * 5/7);
+                    driveBackwards(halfSquare, 0.7f);
+                    //moves to the left
+                    drivingLibrary.bevelDrive(.5f, 0, 0);
+                    sleep(2500);
+                    drivingLibrary.brakeStop();
                     //goes back to the wall
-                    driveBackwards(3.5*square, 0.7f);
+                    driveBackwards(3*square, 0.7f);
 
+                    // go right
+                    drivingLibrary.bevelDrive(-.7f, 0, 0);
+                    sleep(2200);
+                    drivingLibrary.brakeStop();
                     //picks up wobble goal 2
-                    drivingLibrary.bevelDrive(.7f, 0, 0);
                     sleep(1000 * 5/7);
-                    //leftWobble.setPosition(-.5);
-                    //rightWobble.setPosition(0.92);
+                    servosDown();
                     //begins controlling second wobble goal
                     sleep(500);
                     //moves to the left
@@ -182,27 +192,24 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
                     drivingLibrary.bevelDrive(0,.7f, 0);
                     sleep(1500 * 5/7);
                     drivingLibrary.brakeStop();
-                    //leftWobble.setPosition(1);
-                    //rightWobble.setPosition(-1);
+                    servosUp();
                     break;
                 case 4:
                     //continues to square C
                     driveForwards(4.5*square,0.5f);
 
                     //lifts wobble goal arms
-                    //leftWobble.setPosition(1);
-                    //rightWobble.setPosition(-1);
+                    servosUp();
                     drivingLibrary.brakeStop();
                     //move backwards
-                    driveBackwards(4.5*square,0.8f);
+                    driveBackwards(4.5*square,1f);
 
                     //moves right behind the second wobble goal
                     drivingLibrary.bevelDrive(-.8f, 0f, 0);
                     sleep(2800 * 5/8);
                     drivingLibrary.brakeStop();
                     //takes possession of the second wobble goal
-                    //leftWobble.setPosition(-0.5);
-                    //rightWobble.setPosition(0.92);
+                    servosDown();
                     sleep(500);
                     drivingLibrary.brakeStop();
                     //crashes against left wall
@@ -214,13 +221,13 @@ public class EncoderTwoWobbleGoalsAuton extends LinearOpMode {
                     //moves to square C
                     driveForwards(4.5*square, 0.5f);
                     //stops controlling wobble goal
-                    //leftWobble.setPosition(1);
-                    //rightWobble.setPosition(-1);
+                    servosUp();
                     drivingLibrary.brakeStop();
                     //move backwards to park on the line
                     driveBackwards(2*square,0.8f);
-                    drivingLibrary.bevelDrive(0.8f,0,0);
+                    drivingLibrary.bevelDrive(-0.8f,0,0);
                     sleep(1500);
+                    drivingLibrary.brakeStop();
                     break;
             }
         }
