@@ -427,27 +427,30 @@ public class    DrivingLibrary {
         return deltaY;
     }
 
-    public void driveForward(double inches) {
-        resetEncoderValues();
-
+    public double getDistTravelled() {
         double leftVal = getEncoderValues()[0];
         double rightVal = getEncoderValues()[1];
 
-        double avgDist = 8192 * 90 * 25.4 * (leftVal + rightVal) / 2;
+        double avgDist = (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2 / 8192;
 
-        while (avgDist < inches) {
-            bevelDrive(0, -.5f, 0);
+        return avgDist;
+    }
+
+    /*public boolean travelledDist(double inches) {
+        double leftVal = getEncoderValues()[0];
+        double rightVal = getEncoderValues()[1];
+
+        double avgDist = (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2 / 8192;
+
+        if (avgDist < inches) {
+            return false;
+            /*bevelDrive(0, -.5f, 0);
             leftVal = getEncoderValues()[0];
             rightVal = getEncoderValues()[1];
-            avgDist = 8192 * (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2;
-            opMode.telemetry.addData("Left Encoder Value", leftVal);
-            opMode.telemetry.addData("Right Encoder Value", rightVal);
-            opMode.telemetry.addData("Distance Travelled", avgDist);
-            opMode.telemetry.update();
-        }
-
-        brakeStop();
-    }
+            avgDist = 8192 * (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2;*/
+        /*}
+        return true;
+    }*/
 
 
 }
