@@ -91,11 +91,14 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
                     drivingLibrary.brakeStop();
+                    //releases wobble goal
                     drivingLibrary.bevelDrive(0, .7f, 0);
                     sleep(3800 * 5/7);
                     drivingLibrary.brakeStop();
+                    //moves backward
                     drivingLibrary.bevelDrive(-.7f, 0, 0);
                     sleep(3000 * 5/7);
+                    //moves to pick up wobble goal
                     drivingLibrary.brakeStop();
                     leftWobble.setPosition(-.5);
                     rightWobble.setPosition(0.92);
@@ -103,9 +106,11 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     drivingLibrary.brakeStop();
                     drivingLibrary.bevelDrive(.5f, 0, 0);
                     sleep(3000);
+                    //crashes against wall
                     drivingLibrary.bevelDrive(0, -.5f, 0);
                     sleep(4000);
                     drivingLibrary.brakeStop();
+                    //drops off wobble goal
                     //corrects angle
                     while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
                         if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn
@@ -134,20 +139,26 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     rightWobble.setPosition(-1);
                     //drops off wobble goal at square B
                     sleep(500);
+                    //moves to the right
                     drivingLibrary.bevelDrive(-.7f, 0, 0);
                     sleep(2000 * 5/7);
+                    //goes back to the wall
                     drivingLibrary.bevelDrive(0,.7f, 0);
                     sleep(6000 * 5/7);
+                    //picks up wobble goal 2
                     drivingLibrary.bevelDrive(.7f, 0, 0);
                     sleep(1000 * 5/7);
                     leftWobble.setPosition(-.5);
                     rightWobble.setPosition(0.92);
-                    //picks up second wobble goal
+                    //begins controlling second wobble goal
                     sleep(500);
+                    //moves to the left
                     drivingLibrary.bevelDrive(.5f, 0, 0);
                     sleep(1000);
+                    //moves forward to square B
                     drivingLibrary.bevelDrive(0, -.5f, 0);
                     sleep(5500);
+                    //parks
                     drivingLibrary.bevelDrive(0,.7f, 0);
                     sleep(1500 * 5/7);
                     drivingLibrary.brakeStop();
@@ -155,9 +166,11 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     rightWobble.setPosition(-1);
                     break;
                 case 4:
+                    //continues to square C
                     drivingLibrary.bevelDrive(0, -.5f, 0);
                     sleep(3500);
                     drivingLibrary.brakeStop();
+                    //lifts wobble goal arms
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
                     drivingLibrary.brakeStop();
@@ -165,13 +178,16 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                     drivingLibrary.bevelDrive(0, .8f, 0);
                     sleep(7500 * 5/8);
                     drivingLibrary.brakeStop();
+                    //moves right behind the second wobble goal
                     drivingLibrary.bevelDrive(-.8f, 0f, 0);
                     sleep(2800 * 5/8);
                     drivingLibrary.brakeStop();
+                    //takes possession of the second wobble goal
                     leftWobble.setPosition(-0.5);
                     rightWobble.setPosition(0.92);
                     sleep(500);
                     drivingLibrary.brakeStop();
+                    //crashes against left wall
                     drivingLibrary.bevelDrive(.5f, 0, 0);
                     sleep(3000);
                     drivingLibrary.brakeStop();
@@ -186,13 +202,15 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
                         }
 
                     }
+                    //moves to square C
                     drivingLibrary.bevelDrive(0, -.5f, 0);
                     sleep(7500);
                     drivingLibrary.brakeStop();
+                    //stops controlling wobble goal
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
                     drivingLibrary.brakeStop();
-                    //move backwards
+                    //move backwards to park on the line
                     drivingLibrary.bevelDrive(0, .8f, 0);
                     sleep(2500);
                     drivingLibrary.brakeStop();

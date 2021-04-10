@@ -71,6 +71,7 @@ public class TeleOpMode extends LinearOpMode {
                 drivingLibrary.setMode(drivingMode);
             }
 
+<<<<<<< Updated upstream
             if (gamepad1.a) {
                 if (Math.abs(drivingLibrary.getIMUAngle() + .11) > .05) {
                     if (drivingLibrary.getIMUAngle() > -.11) { // check which direction we need to turn
@@ -86,6 +87,15 @@ public class TeleOpMode extends LinearOpMode {
             if (gamepad2.a) {
                 intakeMotor.setPower(intakePower);
             } else if (gamepad2.b) {
+=======
+            // intake controls
+            if (gamepad2.a) {
+                intakeOn = !intakeOn;
+            }
+            if(gamepad2.a) {
+                intakeMotor.setPower(intakePower);
+            } else if(gamepad2.b) {
+>>>>>>> Stashed changes
                 intakeMotor.setPower(-intakePower);
                 launchMotorLeft.setPower(-.25f);
                 launchMotorRight.setPower(-.25f);
@@ -108,6 +118,7 @@ public class TeleOpMode extends LinearOpMode {
                 launchMotorRight.setPower(0);
             }
 
+<<<<<<< Updated upstream
             if (gamepad2.dpad_up) {
                 if (launchTest < 1.001) {
                     launchTest += .001;
@@ -131,6 +142,16 @@ public class TeleOpMode extends LinearOpMode {
                 rightWobble.setPosition(0);
                 leftWobble.setPosition(.75);
             }
+=======
+            if (gamepad2.right_bumper) {
+                rightWobble.setPosition(1);
+                leftWobble.setPosition(-1);
+            }
+            if(gamepad2.left_bumper) {
+                rightWobble.setPosition(-1);
+                leftWobble.setPosition(1);
+            }
+>>>>>>> Stashed changes
 
 
             telemetry.addData("Status", "Running");
