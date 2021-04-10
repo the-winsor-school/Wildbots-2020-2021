@@ -15,8 +15,8 @@ public class RevServoTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        left = hardwareMap.get(Servo.class, "leftWobbleGoalArm");
-        right = hardwareMap.get(Servo.class, "rightWobbleGoalArm");
+        left = hardwareMap.get(Servo.class, "leftWobble");
+        right = hardwareMap.get(Servo.class, "rightWobble");
 
         leftPos = left.getPosition();
         rightPos = right.getPosition();
@@ -28,19 +28,19 @@ public class RevServoTest extends LinearOpMode {
             right.setPosition(rightPos);
 
             if (gamepad1.a) {
-                rightPos += .01;
+                rightPos += .001;
             }
 
             if (gamepad1.b) {
-                rightPos -= .01;
+                rightPos -= .001;
             }
 
             if (gamepad1.x) {
-                leftPos += .01;
+                leftPos += .001;
             }
 
             if (gamepad1.y) {
-                leftPos -= .01;
+                leftPos -= .001;
             }
 
             telemetry.addData("left pos", leftPos);
