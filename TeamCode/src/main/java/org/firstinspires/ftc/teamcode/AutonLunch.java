@@ -13,7 +13,7 @@ public class AutonLunch extends LinearOpMode {
     private DrivingLibrary drivingLibrary;
 
     // variables
-    double lunchVel = 800;
+    double lunchVel = 1250;
     boolean atSpeed = false;
     int ringsLunched = 0;
 
@@ -21,7 +21,7 @@ public class AutonLunch extends LinearOpMode {
     int drivingMode;
     DcMotorEx lunchLeft;
     DcMotorEx lunchRight;
-    Servo intakeHelp;
+    //Servo intakeHelp;
     DcMotor intakeMotor;
 
 
@@ -35,7 +35,7 @@ public class AutonLunch extends LinearOpMode {
 
         lunchLeft = hardwareMap.get(DcMotorEx.class, "launchMotorLeft");
         lunchRight = hardwareMap.get(DcMotorEx.class, "launchMotorRight");
-        intakeHelp = hardwareMap.get(Servo.class, "intakeHelp");
+        //intakeHelp = hardwareMap.get(Servo.class, "intakeHelp");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
         telemetry.addData("GUESS WHAT?!?", "INITIALIZED AHHH");
@@ -46,15 +46,22 @@ public class AutonLunch extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            drivingLibrary.spinToAngle(Math.PI);
+            drivingLibrary.bevelDrive(0, .5f, 0);
+            sleep(4000);
+            drivingLibrary.brakeStop();
+
+            //drivingLibrary.spinToAngle(Math.PI);
             // runs until 3 rings have been launched
-            while (ringsLunched < 3) {
+            while (ringsLunched < 4) {
                 // turns on launcher motors
                 lunchLeft.setVelocity(-lunchVel);
                 lunchRight.setVelocity(lunchVel);
 
                 // launches when motors are at a high enough velocity
-                if (lunchLeft.getVelocity() <= -(lunchVel - 20) && lunchRight.getVelocity() >= (lunchVel - 20)) {
+                if (lunchLeft.getVelocity() <= -(lunchVel - 20) &&
+                        /*lunchLeft.getVelocity() >= -(lunchVel + 20) &&*/
+                        lunchRight.getVelocity() >= (lunchVel - 20) /*&&*/
+                        /*lunchRight.getVelocity() <= (lunchVel + 20)*/) {
 
                     intakeMotor.setPower(-0.5);
                     atSpeed = true;
@@ -69,13 +76,10 @@ public class AutonLunch extends LinearOpMode {
                     }
                 }
             }
-            // moves the intake helper to position
-            drivingLibrary.resetEncoderValues();
-            while (drivingLibrary.getDistTravelled() > -4) {
-                drivingLibrary.bevelDrive(0, 5f, 0);
-            }
+
+            drivingLibrary.bevelDrive(0, .5f, 0);
+            sleep(100);
             drivingLibrary.brakeStop();
-            // intakeHelp.setPosition(-0.5f);
         }
     }
 }

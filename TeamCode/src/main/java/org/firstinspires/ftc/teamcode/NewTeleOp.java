@@ -23,13 +23,13 @@ public class NewTeleOp extends LinearOpMode {
     float intakePower = .5f;
     double launchVel = 1000;
     double highGoalVel = 1250;
-    double powerShotVel = 800;
+    double powerShotVel = 850;
     // TARGET VELOCITY FOR HIGH GOAL: 1250
     // TARGET VELOCITY FOR POWER SHOT: 800
 
     boolean launchMode = false;
     boolean intakeOn = false;
-    boolean powerShot = false;
+    boolean powerShot = true;
     int speedHeld = 0;
     int speedRange = 20;
 
@@ -133,12 +133,14 @@ public class NewTeleOp extends LinearOpMode {
                 }*/
 
                 if(gamepad2.dpad_left) {
-                   // powerShot = false;
-                    launchVel -= 1;
+                   //powerShot = false;
+                   // launchVel -= 1;
+                    powerShotVel -= 1;
                 }
                 else if(gamepad2.dpad_right) {
-                   // powerShot = true;
-                    launchVel += 1;
+                    //powerShot = true;
+                    // launchVel += 1;
+                    powerShotVel += 1;
                 }
 
                 launchMotorRight.setVelocity(0);
