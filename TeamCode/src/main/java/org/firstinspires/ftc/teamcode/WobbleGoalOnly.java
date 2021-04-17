@@ -35,8 +35,8 @@ public class WobbleGoalOnly extends LinearOpMode {
         telemetry.update();
 
         distTop = hardwareMap.get(Rev2mDistanceSensor.class, "distTop");
-        leftWobble = hardwareMap.get(Servo.class, "leftWobbleGoalArm");
-        rightWobble = hardwareMap.get(Servo.class, "rightWobbleGoalArm");
+        leftWobble = hardwareMap.get(Servo.class, "leftWobble");
+        rightWobble = hardwareMap.get(Servo.class, "rightWobble");
         launchMotorLeft = hardwareMap.get(DcMotor.class, "launchMotor1");
         launchMotorRight = hardwareMap.get(DcMotor.class, "launchMotor2");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
@@ -66,27 +66,59 @@ public class WobbleGoalOnly extends LinearOpMode {
 
                     ranOnce = true;
                 }
-
             }
             //moves forward to park line
-            drivingLibrary.bevelDrive(0, -.5f, 0);
-            sleep(4000);
+            /*drivingLibrary.bevelDrive(0, -.5f, 0);
+            sleep(4100);
+            drivingLibrary.brakeStop();*/
+
+            //moves forward to park line odo
+            drivingLibrary.resetEncoderValues();
+
+            while(drivingLibrary.getDistTravelled() < 65) {
+                drivingLibrary.bevelDrive(0, -.5f, 0);
+            }
+
             drivingLibrary.brakeStop();
 
 
             switch (numRings) {
                 case 0:
                     //move backwards
-                    drivingLibrary.bevelDrive(0, .5f, 0);
+                    /*drivingLibrary.bevelDrive(0, .5f, 0);
                     sleep(1000);
+                    drivingLibrary.brakeStop();*/
+
+                    // moves backwards odo
+                    drivingLibrary.resetEncoderValues();
+
+                    while(drivingLibrary.getDistTravelled() > -12) {
+                        drivingLibrary.bevelDrive(0, .5f, 0);
+                    }
+
                     drivingLibrary.brakeStop();
+
+
                     leftWobble.setPosition(1);
                     rightWobble.setPosition(-1);
                     drivingLibrary.bevelDriveCorrect(-.5f, 0, 0);
                     sleep(1500);
-                    drivingLibrary.bevelDrive(0, -.5f, 0);
-                    sleep(1500);
                     drivingLibrary.brakeStop();
+
+                    // drive forwards
+                    /*drivingLibrary.bevelDrive(0, -.5f, 0);
+                    sleep(1750);
+                    drivingLibrary.brakeStop();*/
+
+                    // drive forwards odo
+                    drivingLibrary.resetEncoderValues();
+
+                    while(drivingLibrary.getDistTravelled() < 12) {
+                        drivingLibrary.bevelDrive(0, -.5f, 0);
+                    }
+
+                    drivingLibrary.brakeStop();
+
                     break;
                 case 1:
                     //go forwards

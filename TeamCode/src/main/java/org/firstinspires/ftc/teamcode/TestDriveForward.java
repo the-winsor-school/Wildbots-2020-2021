@@ -11,7 +11,6 @@ public class TestDriveForward extends LinearOpMode {
 
     boolean ranOnce = false;
 
-    double targetDist = 12;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -27,9 +26,19 @@ public class TestDriveForward extends LinearOpMode {
         while (opModeIsActive() && !ranOnce) {
             drivingLibrary.resetEncoderValues();
 
-            while(drivingLibrary.getDistTravelled() < targetDist) {
+            while(drivingLibrary.getDistTravelled() < 24) {
                 drivingLibrary.bevelDrive(0, -.5f, 0);
             }
+
+            drivingLibrary.brakeStop();
+            sleep(1000);
+            drivingLibrary.resetEncoderValues();
+
+            while(drivingLibrary.getDistTravelled() > -24) {
+                drivingLibrary.bevelDrive(0, .5f, 0);
+            }
+
+
 
             //double leftVal = drivingLibrary.getEncoderValues()[0];
             //double rightVal = drivingLibrary.getEncoderValues()[1];
