@@ -35,7 +35,6 @@ public class NewTeleOp extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         drivingLibrary = new DrivingLibrary(this);
-        drivingLibrary.setSpeed(1);
         drivingMode = 0;
         drivingLibrary.setMode(drivingMode);
 

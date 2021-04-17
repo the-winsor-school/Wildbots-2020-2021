@@ -71,6 +71,7 @@ public class TeleOpMode extends LinearOpMode {
                 drivingLibrary.setMode(drivingMode);
             }
 
+
             if (gamepad1.a) {
                 if (Math.abs(drivingLibrary.getIMUAngle() + .11) > .05) {
                     if (drivingLibrary.getIMUAngle() > -.11) { // check which direction we need to turn
@@ -86,6 +87,16 @@ public class TeleOpMode extends LinearOpMode {
             if (gamepad2.a) {
                 intakeMotor.setPower(intakePower);
             } else if (gamepad2.b) {
+
+                /*
+            // intake controls
+            if (gamepad2.a) {
+                intakeOn = !intakeOn;
+            }
+            if(gamepad2.a) {
+                intakeMotor.setPower(intakePower);
+            } else if(gamepad2.b) {
+>>>>>>> Stashed changes
                 intakeMotor.setPower(-intakePower);
                 launchMotorLeft.setPower(-.25f);
                 launchMotorRight.setPower(-.25f);
@@ -100,7 +111,7 @@ public class TeleOpMode extends LinearOpMode {
             } else if (gamepad2.y) { // this is here for testing values
                 /*launchMotor1.setPower(gamepad2.right_trigger); // might need to become negative
                 launchMotor2.setPower(gamepad2.left_trigger);*/
-
+/*
                 launchMotorLeft.setPower(launchTest);
                 launchMotorRight.setPower(launchTest);
             } else {
@@ -108,41 +119,53 @@ public class TeleOpMode extends LinearOpMode {
                 launchMotorRight.setPower(0);
             }
 
-            if (gamepad2.dpad_up) {
-                if (launchTest < 1.001) {
-                    launchTest += .001;
+*/
+                if (gamepad2.dpad_up) {
+                    if (launchTest < 1.001) {
+                        launchTest += .001;
+                    }
                 }
-            }
-            if (gamepad2.dpad_down) {
-                if (launchTest > .001) {
-                    launchTest -= .001;
+                if (gamepad2.dpad_down) {
+                    if (launchTest > .001) {
+                        launchTest -= .001;
+                    }
                 }
-            }
 
-            telemetry.addData("launch power", launchTest);
-            telemetry.addData("robot angle", drivingLibrary.getIMUAngle());
+                telemetry.addData("launch power", launchTest);
+                telemetry.addData("robot angle", drivingLibrary.getIMUAngle());
 
 
+                if (gamepad2.right_bumper) {
+                    rightWobble.setPosition(.75);
+                    leftWobble.setPosition(0);
+                }
+                if (gamepad2.left_bumper) {
+                    rightWobble.setPosition(0);
+                    leftWobble.setPosition(.75);
+                }
+/*
             if (gamepad2.right_bumper) {
-                rightWobble.setPosition(.75);
-                leftWobble.setPosition(0);
+                rightWobble.setPosition(1);
+                leftWobble.setPosition(-1);
             }
-            if (gamepad2.left_bumper) {
-                rightWobble.setPosition(0);
-                leftWobble.setPosition(.75);
+            if(gamepad2.left_bumper) {
+                rightWobble.setPosition(-1);
+                leftWobble.setPosition(1);
+            }
+*/
+
+
+                telemetry.addData("Status", "Running");
+                telemetry.addData("Brake Mode", drivingLibrary.getMode());
+
+
+                telemetry.update();
             }
 
-
-            telemetry.addData("Status", "Running");
-            telemetry.addData("Brake Mode", drivingLibrary.getMode());
-
-
-            telemetry.update();
+            //autonLibrary.targetsUltimateGoal.deactivate();
         }
 
-        //autonLibrary.targetsUltimateGoal.deactivate();
+        //adb connect 192.168.43.1:5555
+
     }
-
-    //adb connect 192.168.43.1:5555
-
 }
