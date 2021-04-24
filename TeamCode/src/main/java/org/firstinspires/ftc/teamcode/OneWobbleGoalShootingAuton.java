@@ -92,19 +92,15 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
             lunchRight.setVelocity(lunchVel);
 
             // launches when motors are at a high enough velocity
-            if(lunchLeft.getVelocity() <= -(lunchVel - speedRange) &&
+            if (lunchLeft.getVelocity() <= -(lunchVel - 20) &&
+                    /*lunchLeft.getVelocity() >= -(lunchVel + 20) &&*/
+                    lunchRight.getVelocity() >= (lunchVel - 20) /*&&*/
+                /*lunchRight.getVelocity() <= (lunchVel + 20)*/) {
 
-                    lunchRight.getVelocity() >= (lunchVel - speedRange)
-                    ) {
-                speedHeld++;
-
-                if(speedHeld >= 5) {
-                    intakeMotor.setPower(-intakePower);
-                    atSpeed = true;
-                }
+                intakeMotor.setPower(-0.5);
+                atSpeed = true;
 
             } else {
-                speedHeld = 0;
                 intakeMotor.setPower(0);
 
                 // registers when a ring has been launched and resets the atSpeed variable
@@ -114,14 +110,9 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
                 }
             }
         }
-        lunchRight.setVelocity(0);
-        lunchLeft.setVelocity(0);
 
-        // moves the intake helper to position
-        drivingLibrary.resetEncoderValues();
-        while (drivingLibrary.getDistTravelled() > -4) {
-            drivingLibrary.bevelDrive(0, 0.5f, 0);
-        }
+        drivingLibrary.bevelDrive(0, .5f, 0);
+        sleep(100);
         drivingLibrary.brakeStop();
         // intakeHelp.setPosition(-0.5f);
     }
@@ -221,7 +212,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
 
                     turnToAngle(-Math.PI);
 
-                    //launchThreeRingsAndPark();
+                    launchThreeRingsAndPark();
                     break;
                 case 4:
                     //continues to square C
@@ -240,7 +231,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
                     turnToAngle(-(Math.PI));
                     driveBackwards(halfSquare, 0.7f);
 
-                    //launchThreeRingsAndPark();
+                    launchThreeRingsAndPark();
 
                     break;
             }
