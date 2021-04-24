@@ -429,11 +429,12 @@ public class    DrivingLibrary {
 
     public double getDistTravelled() {
         double leftVal = getEncoderValues()[0];
-        double rightVal = getEncoderValues()[1];
+        //double rightVal = getEncoderValues()[1];
 
-        double avgDist = (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2 / 8192;
+        //double avgDist = (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2 / 8192;
 
-        return avgDist;
+        //return avgDist;
+        return leftVal;
     }
 
     /*public boolean travelledDist(double inches) {
