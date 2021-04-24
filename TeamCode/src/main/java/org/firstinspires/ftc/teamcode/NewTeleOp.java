@@ -29,7 +29,7 @@ public class NewTeleOp extends LinearOpMode {
 
     boolean launchMode = false;
     boolean intakeOn = false;
-    boolean powerShot = true;
+    boolean powerShot = false;
     int speedHeld = 0;
     int speedRange = 20;
 
@@ -57,6 +57,17 @@ public class NewTeleOp extends LinearOpMode {
                 drivingMode++;
                 drivingMode %= DrivingMode.values().length;
                 drivingLibrary.setMode(drivingMode);
+            }
+
+            if(gamepad2.dpad_left) {
+                powerShot = false;
+                // launchVel -= 1;
+                //powerShotVel -= 1;
+            }
+            else if(gamepad2.dpad_right) {
+                powerShot = true;
+                // launchVel += 1;
+                //powerShotVel += 1;
             }
 
             telemetry.addData("Power Shot Mode", powerShot);
@@ -130,17 +141,6 @@ public class NewTeleOp extends LinearOpMode {
                     rightWobble.setPosition(0);
                     leftWobble.setPosition(.75);
                 }*/
-
-                if(gamepad2.dpad_left) {
-                   powerShot = false;
-                   // launchVel -= 1;
-                    //powerShotVel -= 1;
-                }
-                else if(gamepad2.dpad_right) {
-                    powerShot = true;
-                    // launchVel += 1;
-                    //powerShotVel += 1;
-                }
 
                 launchMotorRight.setVelocity(0);
                 launchMotorLeft.setVelocity(0);

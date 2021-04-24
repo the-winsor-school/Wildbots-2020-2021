@@ -13,9 +13,10 @@ public class AutonLunch extends LinearOpMode {
     private DrivingLibrary drivingLibrary;
 
     // variables
-    double lunchVel = 1250;
+    double lunchVel = 825;
     boolean atSpeed = false;
     int ringsLunched = 0;
+
 
 
     int drivingMode;
@@ -45,12 +46,31 @@ public class AutonLunch extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        while (opModeIsActive() && !ranOnce) {
+            //move left
+            drivingLibrary.bevelDrive(-.5f, 0, 0);
+            sleep(2000);
+            drivingLibrary.brakeStop();
+            //corrects angle
+            while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .05) {
+                if (drivingLibrary.getIMUAngle() > 0) { // check which direction we need to turn
+                    drivingLibrary.bevelDrive(0, 0, .1f);
+                } else {
+                    drivingLibrary.bevelDrive(0, 0, -.1f);
+
+                }
+
+            }
+
             drivingLibrary.bevelDrive(0, .5f, 0);
-            sleep(4000);
+            sleep(3750);
             drivingLibrary.brakeStop();
 
-            //drivingLibrary.spinToAngle(Math.PI);
+            //move right
+            drivingLibrary.bevelDrive(.5f, 0, 0);
+            sleep(2375);
+            drivingLibrary.brakeStop();
+
             // runs until 3 rings have been launched
             while (ringsLunched < 4) {
                 // turns on launcher motors
@@ -78,8 +98,10 @@ public class AutonLunch extends LinearOpMode {
             }
 
             drivingLibrary.bevelDrive(0, .5f, 0);
-            sleep(100);
+            sleep(375);
             drivingLibrary.brakeStop();
+
+            ranOnce = true;
         }
     }
 }
