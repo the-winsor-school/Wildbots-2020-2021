@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
         import com.qualcomm.robotcore.hardware.DcMotor;
+        import com.qualcomm.robotcore.hardware.DcMotorEx;
         import com.qualcomm.robotcore.hardware.Servo;
 
         import org.firstinspires.ftc.libraries.AutonLibrary;
@@ -24,7 +25,8 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
     //Rev2mDistanceSensor distBot;
     Servo leftWobble;
     Servo rightWobble;
-    //DcMotor launchMotor;
+    DcMotorEx launchLeft;
+    DcMotorEx launchRight;
     //DcMotor intakeMotor;
 
     //initializing
@@ -39,7 +41,8 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
         //distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
         leftWobble = hardwareMap.get(Servo.class, "leftWobble");
         rightWobble = hardwareMap.get(Servo.class, "rightWobble");
-        //launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
+        launchLeft = hardwareMap.get(DcMotorEx.class, "launchLeft");
+        launchRight = hardwareMap.get(DcMotorEx.class, "launchRight");
         //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 

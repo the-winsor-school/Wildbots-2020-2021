@@ -90,8 +90,10 @@ public class TwoWobbleGoalShooting extends LinearOpMode {
         //distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
         leftWobble = hardwareMap.get(Servo.class, "leftWobble");
         rightWobble = hardwareMap.get(Servo.class, "rightWobble");
+        lunchLeft = hardwareMap.get(DcMotorEx.class, "launchMotorLeft");
+        lunchRight = hardwareMap.get(DcMotorEx.class, "launchMotorRight");
         //launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
-        //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 
         autonLibrary = new AutonLibrary(drivingLibrary, this);
@@ -148,7 +150,7 @@ public class TwoWobbleGoalShooting extends LinearOpMode {
                     sleep(3800 * 5/7);
                     drivingLibrary.brakeStop();
                     //moves backward
-                    drivingLibrary.bevelDrive(-.7f, 0, 0);
+                    drivingLibrary.bevelDrive(-.7f, .35f, 0);
                     sleep(3000 * 5/7);
                     //moves to pick up wobble goal
                     drivingLibrary.brakeStop();
