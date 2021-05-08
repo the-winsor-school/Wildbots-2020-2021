@@ -203,7 +203,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
 
                 case 1:
                     //go forwards
-                    driveForwards(3.1 * square, 0.5f);
+                    driveForwards(3 * square, 0.5f);
 
                     // go right
                     drivingLibrary.bevelDrive(-.5f, 0, 0);
@@ -216,8 +216,13 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
                     driveBackwards(square, 0.7f);
 
                     turnToAngle(-Math.PI);
+                    drivingLibrary.bevelDrive(-.5f, 0, 0);
+                    sleep(750);
 
                     launchThreeRingsAndPark();
+                    drivingLibrary.bevelDrive(0, 0.5f, 0);
+                    sleep(500);
+                    drivingLibrary.brakeStop();
                     break;
                 case 4:
                     //continues to square C

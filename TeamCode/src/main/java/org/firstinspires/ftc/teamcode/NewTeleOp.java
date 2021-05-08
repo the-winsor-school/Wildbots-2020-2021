@@ -42,8 +42,8 @@ public class NewTeleOp extends LinearOpMode {
         launchMotorLeft = hardwareMap.get(DcMotorEx.class, "launchMotorLeft");
         launchMotorRight = hardwareMap.get(DcMotorEx.class, "launchMotorRight");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        // rightWobble = hardwareMap.get(Servo.class, "rightWobbleGoalArm");
-        // leftWobble = hardwareMap.get(Servo.class, "leftWobbleGoalArm");
+        rightWobble = hardwareMap.get(Servo.class, "rightWobble");
+        leftWobble = hardwareMap.get(Servo.class, "leftWobble");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
