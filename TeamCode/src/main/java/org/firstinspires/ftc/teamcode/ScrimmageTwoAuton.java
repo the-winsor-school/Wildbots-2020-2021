@@ -35,8 +35,8 @@ public class ScrimmageTwoAuton extends LinearOpMode {
         telemetry.addData("status", "initialized");
         telemetry.update();
 
-        distTop = hardwareMap.get(Rev2mDistanceSensor.class, "distTop");
-        distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
+        distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distTop");
+        distTop = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
         leftWobble = hardwareMap.get(Servo.class, "leftWobble");
         rightWobble = hardwareMap.get(Servo.class, "rightWobble");
         launchMotor = hardwareMap.get(DcMotor.class, "launchMotor");
@@ -50,7 +50,8 @@ public class ScrimmageTwoAuton extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            numRings = autonLibrary.getStackHeight(distTop);
+            numRings = 0;
+            //numRings = autonLibrary.getStackHeight(distTop);
             leftWobble.setPosition(-1);
             rightWobble.setPosition(1);
             sleep(500);

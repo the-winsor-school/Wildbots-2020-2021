@@ -50,7 +50,8 @@ public class WobbleGoalMidGoal extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            numRings = autonLibrary.getStackHeight(distTop);
+            numRings = 0;
+                    //autonLibrary.getStackHeight(distTop);
             rightWobble.setPosition(.75);
             leftWobble.setPosition(0);
             sleep(1000);

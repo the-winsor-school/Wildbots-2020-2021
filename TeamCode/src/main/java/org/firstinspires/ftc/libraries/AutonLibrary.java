@@ -99,8 +99,42 @@ public class AutonLibrary {
         }*/
     }
 
+    public double getDistSensValues(Rev2mDistanceSensor DistSen, String SensorName) {
+        //sum (values added) and count (# of values counted) start at zero
+        double sumTop = 0;
+        int count = 0;
+        //will only take values until its collected 10
+        while (count < 50) {
+            // adds one to the number of values counted
+            count++;
+            sumTop += DistSen.getDistance(DistanceUnit.CM);
+        }
 
-    public double getDistSensValues(Rev2mDistanceSensor DistSenTop) {
+        //gets the average of the bottom sensor's values
+        opMode.telemetry.addData(SensorName, sumTop / count);
+        return (sumTop / count);
+    }
+
+    public int getStackHeight(Rev2mDistanceSensor DistSenTop, Rev2mDistanceSensor DistSenBot) {
+        double distSenTop = getDistSensValues(DistSenTop, "DistTop");
+        double distSenBot = getDistSensValues(DistSenBot, "DistBot");
+        if (distSenTop < 750) {
+            opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 4;
+        } else if (distSenBot < 750) {
+            opMode.telemetry.addData("One Ring", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 1;
+        } else {
+            opMode.telemetry.addData("Zero Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.update();
+            return 0;
+        }
+    }
+
+
+    /*public double getDistSensValues(Rev2mDistanceSensor DistSenTop) {
         //sum (values added) and count (# of values counted) start at zero
         double sumtop = 0;
         int count = 0;
@@ -119,19 +153,19 @@ public class AutonLibrary {
     public int getStackHeight(Rev2mDistanceSensor DistSenTop) {
         double distSenValues = getDistSensValues(DistSenTop);
         if (distSenValues < 200) {
-            opMode.telemetry.addData("Four Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.addData("Four Rings", distSenValues);
             opMode.telemetry.update();
             return 4;
-        } else if (distSenValues < 800) {
-            opMode.telemetry.addData("One Ring", DistSenTop.getDistance(DistanceUnit.CM));
+        } else if (distSenValues < 650) {
+            opMode.telemetry.addData("One Ring", distSenValues);
             opMode.telemetry.update();
             return 1;
         } else {
-            opMode.telemetry.addData("Zero Rings", DistSenTop.getDistance(DistanceUnit.CM));
+            opMode.telemetry.addData("Zero Rings", distSenValues);
             opMode.telemetry.update();
             return 0;
         }
-    }
+    }*/
 
     public boolean getImageTarget() {
         boolean targetVisible = false;

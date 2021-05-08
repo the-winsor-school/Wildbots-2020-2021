@@ -10,7 +10,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.libraries.AutonLibrary;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 
+
 @Disabled
+
 public class WobbleGoalOnly extends LinearOpMode {
 
     private DrivingLibrary drivingLibrary;
@@ -50,7 +52,8 @@ public class WobbleGoalOnly extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            numRings = autonLibrary.getStackHeight(distTop);
+            numRings = 0;
+                    //autonLibrary.getStackHeight(distTop, distBot);
             rightWobble.setPosition(.75);
             leftWobble.setPosition(0);
             sleep(1000);

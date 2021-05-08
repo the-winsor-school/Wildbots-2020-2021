@@ -434,7 +434,7 @@ public class    DrivingLibrary {
         //double avgDist = (100 * Math.PI / 25.4) * (leftVal + rightVal) / 2 / 8192;
 
         //return avgDist;
-        return leftVal;
+        return (100 * Math.PI / 25.4) * (leftVal)/ 8192;
     }
 
     /*public boolean travelledDist(double inches) {

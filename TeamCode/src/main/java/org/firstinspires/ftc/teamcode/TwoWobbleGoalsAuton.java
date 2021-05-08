@@ -53,7 +53,8 @@ public class TwoWobbleGoalsAuton extends LinearOpMode {
             telemetry.addData("rightWobblePosition", rightWobble.getPosition());
             telemetry.addData("leftWobblePosition", leftWobble.getPosition());
             telemetry.update();
-            numRings = autonLibrary.getStackHeight(distTop);
+            numRings = 0;
+                    //autonLibrary.getStackHeight(distTop);
             leftWobble.setPosition(0.2);
             rightWobble.setPosition(1.0);
             //both down
