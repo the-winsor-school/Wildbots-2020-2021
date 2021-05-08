@@ -8,7 +8,6 @@ import org.firstinspires.ftc.libraries.DrivingLibrary;
 
 //Names the Auton -> "name =" appears on the phone
 @Disabled
-@Autonomous(name = "JustThePowerShot")
 public class PowerShot extends LinearOpMode {
     public static final int ONE_SECOND = 1000;
     private DrivingLibrary drivingLibrary;

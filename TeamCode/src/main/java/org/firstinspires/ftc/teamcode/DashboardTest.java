@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /*
  * Sine wave sample to demonstrate telemetry and config variables in action. Adjust the amplitude,
  * phase, and frequency of the oscillation and watch the changes propagate immediately to the graph.
  */
-@Autonomous
+@Disabled
 public class DashboardTest extends LinearOpMode {
     public static double AMPLITUDE = 10;
     public static double PHASE = 90;

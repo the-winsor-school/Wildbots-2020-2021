@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 
-@Autonomous(name = "Scrimmage Auton Park")
+@Disabled
 public class AutonPark extends LinearOpMode {
 
     private DrivingLibrary drivingLibrary;

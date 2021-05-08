@@ -123,14 +123,14 @@ public class NewTeleOp extends LinearOpMode {
                 }
 
                 // note that these values need to be re-tested
-                /*if (gamepad2.right_bumper) {
-                    rightWobble.setPosition(.75);
+                if (gamepad2.right_bumper) {
+                    rightWobble.setPosition(1);
                     leftWobble.setPosition(0);
                 }
                 else if(gamepad2.left_bumper) {
                     rightWobble.setPosition(0);
-                    leftWobble.setPosition(.75);
-                }*/
+                    leftWobble.setPosition(1);
+                }
 
                 if(gamepad2.dpad_left) {
                    //powerShot = false;

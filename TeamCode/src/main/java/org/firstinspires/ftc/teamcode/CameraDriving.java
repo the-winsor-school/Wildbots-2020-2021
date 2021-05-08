@@ -29,7 +29,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @Disabled
-@TeleOp
 public class CameraDriving extends LinearOpMode {
     // webcam settings: back camera, portrait false
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;

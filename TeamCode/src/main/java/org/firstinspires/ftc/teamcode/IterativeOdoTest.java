@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.libraries.DrivingLibrary;
 
-@TeleOp
+@Disabled
 public class IterativeOdoTest extends OpMode {
     DrivingLibrary drivingLibrary;
     FtcDashboard dashboard;

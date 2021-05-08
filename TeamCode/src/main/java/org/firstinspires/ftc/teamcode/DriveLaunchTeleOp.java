@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.libraries.DrivingLibrary;
 import java.util.Arrays;
 
 //class name
-@TeleOp(name  = "Spinny Motor", group = "Finished")
+@Disabled
 public class DriveLaunchTeleOp extends LinearOpMode {
     //drive train
     DrivingLibrary drivingLibrary;

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 
 import java.util.ArrayList;
 
-@TeleOp(name  = "Scrimmage Teleop", group = "Finished")
+@Disabled
 public class TeleOpMode extends LinearOpMode {
     //drive train
     DrivingLibrary drivingLibrary;

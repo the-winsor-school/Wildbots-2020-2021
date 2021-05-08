@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 //imports
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.enums.DrivingMode;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 
 
 //class name
-@TeleOp(name  = "TeleOp Mode", group = "Finished")
+@Disabled
 public class DriveOnlyTeleOp extends LinearOpMode {
     //drive train
     DrivingLibrary drivingLibrary;
