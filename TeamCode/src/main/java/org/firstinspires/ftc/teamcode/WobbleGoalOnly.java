@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.libraries.AutonLibrary;
 import org.firstinspires.ftc.libraries.DrivingLibrary;
-
+@Disabled
 @Autonomous
 public class WobbleGoalOnly extends LinearOpMode {
 
@@ -49,7 +50,8 @@ public class WobbleGoalOnly extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            numRings = autonLibrary.getStackHeight(distTop);
+            numRings = 0;
+                    //autonLibrary.getStackHeight(distTop, distBot);
             rightWobble.setPosition(.75);
             leftWobble.setPosition(0);
             sleep(1000);

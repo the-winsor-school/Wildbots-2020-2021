@@ -13,7 +13,7 @@ public class AutonLunch extends LinearOpMode {
     private DrivingLibrary drivingLibrary;
 
     // variables
-    double lunchVel = 825;
+    double lunchVel = 808;
     boolean atSpeed = false;
     int ringsLunched = 0;
 

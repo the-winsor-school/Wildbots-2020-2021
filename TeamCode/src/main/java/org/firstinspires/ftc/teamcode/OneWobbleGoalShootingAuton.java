@@ -21,7 +21,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
     private static final long parkLine = 1000; //Time to get to line
 
     Rev2mDistanceSensor distTop;
-    //Rev2mDistanceSensor distBot;
+    Rev2mDistanceSensor distBot;
     Servo leftWobble;
     Servo rightWobble;
     int drivingMode;
@@ -31,11 +31,9 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
     DcMotor intakeMotor;
 
     //lunchVel is for the high goal??? unsure
-    double lunchVel = 1250;
+    double lunchVel = 825;
     boolean atSpeed = false;
     int ringsLunched = 0;
-    int speedHeld = 0;
-    int speedRange = 20;
     float intakePower = 0.5f;
     int numRings;
     //how long a square is :T
@@ -84,7 +82,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
     }
 
     public void launchThreeRingsAndPark(){
-        drivingLibrary.spinToAngle(Math.PI);
+        //drivingLibrary.spinToAngle(Math.PI);
         // runs until 3 rings have been launched
         while (ringsLunched < 4) {
             // turns on launcher motors
@@ -111,9 +109,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
             }
         }
 
-        drivingLibrary.bevelDrive(0, .5f, 0);
-        sleep(100);
-        drivingLibrary.brakeStop();
+        driveBackwards(square, 0.5f);
         // intakeHelp.setPosition(-0.5f);
     }
     public void turnToAngle(double angle){
@@ -124,6 +120,8 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
                 drivingLibrary.bevelDriveCorrect(0, 0, -.5f);
             }
         }
+
+        drivingLibrary.brakeStop();
     }
 
     public void runOpMode() throws InterruptedException {
@@ -131,7 +129,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
         drivingLibrary.setSpeed(1.0);
         drivingLibrary.setMode(1);
         distTop = hardwareMap.get(Rev2mDistanceSensor.class, "distTop");
-        //distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
+        distBot = hardwareMap.get(Rev2mDistanceSensor.class, "distBot");
         leftWobble = hardwareMap.get(Servo.class, "leftWobble");
         rightWobble = hardwareMap.get(Servo.class, "rightWobble");
         //launch stuff
@@ -151,7 +149,8 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
             telemetry.addData("rightWobblePosition", rightWobble.getPosition());
             telemetry.addData("leftWobblePosition", leftWobble.getPosition());
             telemetry.update();
-            //numRings = autonLibrary.getStackHeight(distTop);\
+            numRings = autonLibrary.getStackHeight(distBot, distTop);
+
 
             sleep(500);
             servosDown();
@@ -162,7 +161,11 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
             telemetry.update();
             //moves left
             drivingLibrary.bevelDrive(.5f, 0, 0);
-            sleep(2000);
+            sleep(2100);
+            drivingLibrary.brakeStop();
+
+            drivingLibrary.bevelDrive(0, 0.5f, 0);
+            sleep(500);
             drivingLibrary.brakeStop();
             //corrects angle
             while (Math.abs(drivingLibrary.getIMUAngle() - 0) > .1) {
@@ -174,6 +177,8 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
                     ranOnce = true;
                 }
             }
+            drivingLibrary.bevelDrive(0, -0.5f, 0);
+            sleep(500);
 
             switch (numRings) {
                 case 0:
@@ -190,7 +195,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
                     turnToAngle(-(Math.PI)/2);
                     driveForwards(18, 0.7f);
 
-                    turnToAngle(-Math.PI);
+                    turnToAngle(-Math.PI + .1);
                     driveBackwards(8, 0.7f);
 
                     launchThreeRingsAndPark();
@@ -198,7 +203,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
 
                 case 1:
                     //go forwards
-                    driveForwards(3.5 * square, 0.5f);
+                    driveForwards(3.1 * square, 0.5f);
 
                     // go right
                     drivingLibrary.bevelDrive(-.5f, 0, 0);
@@ -222,15 +227,15 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
                     servosUp();
 
                     //move backwards
-                    driveBackwards(2.5 * square, 1f);
+                    driveBackwards(1.5 * square, 1f);
 
                     //go to shooting location
                     turnToAngle(-(Math.PI)/2);
                     driveForwards(10, 0.7f);
 
                     turnToAngle(-(Math.PI));
-                    driveBackwards(halfSquare, 0.7f);
 
+                    driveForwards(halfSquare, 1f);
                     launchThreeRingsAndPark();
 
                     break;
