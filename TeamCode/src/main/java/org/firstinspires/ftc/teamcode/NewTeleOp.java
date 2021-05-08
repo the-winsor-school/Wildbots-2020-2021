@@ -29,13 +29,14 @@ public class NewTeleOp extends LinearOpMode {
 
     boolean launchMode = false;
     boolean intakeOn = false;
-    boolean powerShot = true;
+    boolean powerShot = false;
     int speedHeld = 0;
     int speedRange = 20;
 
     public void runOpMode() throws InterruptedException {
         drivingLibrary = new DrivingLibrary(this);
         drivingMode = 0;
+        drivingLibrary.setSpeed(1);
         drivingLibrary.setMode(drivingMode);
 
         launchMotorLeft = hardwareMap.get(DcMotorEx.class, "launchMotorLeft");
@@ -58,11 +59,20 @@ public class NewTeleOp extends LinearOpMode {
                 drivingLibrary.setMode(drivingMode);
             }
 
+            if(gamepad2.dpad_left) {
+                powerShot = false;
+                // launchVel -= 1;
+                //powerShotVel -= 1;
+            }
+            else if(gamepad2.dpad_right) {
+                powerShot = true;
+                // launchVel += 1;
+                //powerShotVel += 1;
+            }
+
             telemetry.addData("Power Shot Mode", powerShot);
             telemetry.addData("launch val", launchVel);
             telemetry.update();
-
-
 
             if (launchMode) {
                 if(powerShot) {
@@ -116,8 +126,8 @@ public class NewTeleOp extends LinearOpMode {
                     intakeMotor.setPower(-intakePower);
                 } else if (gamepad2.b) {
                     intakeMotor.setPower(intakePower);
-                    launchMotorLeft.setVelocity(200);
-                    launchMotorRight.setVelocity(-200);
+                    launchMotorLeft.setVelocity(450);
+                    launchMotorRight.setVelocity(-450);
                 } else {
                     intakeMotor.setPower(0);
                 }
@@ -130,17 +140,6 @@ public class NewTeleOp extends LinearOpMode {
                 else if(gamepad2.left_bumper) {
                     rightWobble.setPosition(0);
                     leftWobble.setPosition(1);
-                }
-
-                if(gamepad2.dpad_left) {
-                   //powerShot = false;
-                   // launchVel -= 1;
-                    powerShotVel -= 1;
-                }
-                else if(gamepad2.dpad_right) {
-                    //powerShot = true;
-                    // launchVel += 1;
-                    powerShotVel += 1;
                 }
 
                 launchMotorRight.setVelocity(0);
