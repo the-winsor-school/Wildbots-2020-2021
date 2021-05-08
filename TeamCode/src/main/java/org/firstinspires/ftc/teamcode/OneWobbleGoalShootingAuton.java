@@ -156,6 +156,7 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
             servosDown();
             //both down
             sleep(1000);
+
             telemetry.addData("rightWobblePosition", rightWobble.getPosition());
             telemetry.addData("leftWobblePosition", leftWobble.getPosition());
             telemetry.update();
@@ -213,14 +214,15 @@ public class OneWobbleGoalShootingAuton extends LinearOpMode {
 
                     //drops off wobble goal at square B
                     sleep(500);
-                    driveBackwards(square, 0.7f);
+                    driveBackwards(square, 1.0f);
 
                     turnToAngle(-Math.PI);
                     drivingLibrary.bevelDrive(-.5f, 0, 0);
-                    sleep(750);
+                    sleep(1000);
+                    drivingLibrary.brakeStop();
 
                     launchThreeRingsAndPark();
-                    drivingLibrary.bevelDrive(0, 0.5f, 0);
+                    drivingLibrary.bevelDrive(0, -0.5f, 0);
                     sleep(500);
                     drivingLibrary.brakeStop();
                     break;
